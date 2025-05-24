@@ -81,7 +81,8 @@ fun GoogleButton(
             AnimatedVisibility(visible = loading.not()) {
                 Icon(
                     painter = painterResource(icon),
-                    contentDescription = "Google logo"
+                    contentDescription = "Google logo",
+                    tint = Color.Unspecified,
                 )
             }
 
