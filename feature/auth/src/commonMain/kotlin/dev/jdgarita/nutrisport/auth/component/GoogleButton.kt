@@ -40,7 +40,7 @@ import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun GoogleButton(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     loading: Boolean = false,
     primaryText: String = "Sign in with Google",
     secondaryText: String = "Please wait...",
