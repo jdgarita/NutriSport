@@ -30,10 +30,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import dev.jdgarita.nutrisport.shared.FontSize
-import dev.jdgarita.nutrisport.shared.Gray
-import dev.jdgarita.nutrisport.shared.GrayDarker
 import dev.jdgarita.nutrisport.shared.IconSecondary
 import dev.jdgarita.nutrisport.shared.Resources
+import dev.jdgarita.nutrisport.shared.SurfaceDarker
+import dev.jdgarita.nutrisport.shared.SurfaceLighter
 import dev.jdgarita.nutrisport.shared.TextPrimary
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
@@ -46,8 +46,8 @@ fun GoogleButton(
     secondaryText: String = "Please wait...",
     icon: DrawableResource = Resources.Image.GoogleLogo,
     shape: Shape = RoundedCornerShape(size = 99.dp),
-    backgroundColor: Color = Gray,
-    borderColor: Color = GrayDarker,
+    backgroundColor: Color = SurfaceLighter,
+    borderColor: Color = SurfaceDarker,
     progressIndicatorColor: Color = IconSecondary,
     onClick: () -> Unit
 ) {
