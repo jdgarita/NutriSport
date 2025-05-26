@@ -1,6 +1,6 @@
 package dev.jdgarita.nutrisport.auth.component
 
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.border
@@ -78,20 +78,22 @@ fun GoogleButton(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            AnimatedVisibility(visible = loading.not()) {
-                Icon(
-                    painter = painterResource(icon),
-                    contentDescription = "Google logo",
-                    tint = Color.Unspecified,
-                )
-            }
 
-            AnimatedVisibility(visible = loading) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(24.dp),
-                    strokeWidth = 2.dp,
-                    color = progressIndicatorColor
-                )
+            AnimatedContent(targetState = loading) { loadingState ->
+                if (loadingState.not()) {
+                    Icon(
+                        painter = painterResource(icon),
+                        contentDescription = "Google logo",
+                        tint = Color.Unspecified,
+                    )
+                } else {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(24.dp),
+                        strokeWidth = 2.dp,
+                        color = progressIndicatorColor
+                    )
+                }
+
             }
             Spacer(modifier = Modifier.width(12.dp))
             Text(
