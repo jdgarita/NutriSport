@@ -24,8 +24,11 @@ import dev.jdgarita.nutrisport.shared.Alpha
 import dev.jdgarita.nutrisport.shared.BebasNeueFont
 import dev.jdgarita.nutrisport.shared.FontSize
 import dev.jdgarita.nutrisport.shared.Surface
+import dev.jdgarita.nutrisport.shared.SurfaceBrand
+import dev.jdgarita.nutrisport.shared.SurfaceError
 import dev.jdgarita.nutrisport.shared.TextPrimary
 import dev.jdgarita.nutrisport.shared.TextSecondary
+import dev.jdgarita.nutrisport.shared.TextWhite
 import rememberMessageBarState
 
 @Composable
@@ -40,6 +43,10 @@ fun AuthScreen() {
                 bottom = padding.calculateBottomPadding()
             ),
             messageBarState = messageBarState,
+            errorContainerColor = SurfaceError,
+            errorContentColor = TextWhite,
+            successContainerColor = SurfaceBrand,
+            successContentColor = TextPrimary,
             errorMaxLines = 2,
         ) {
             Column(
