@@ -8,12 +8,12 @@ import dev.jdgarita.nutrisport.auth.AuthScreen
 import dev.jdgarita.nutrisport.home.HomeGraphScreen
 
 @Composable
-fun SetupNavGraph() {
+fun SetupNavGraph(startDestination: Screen = Screen.Auth) {
     val navController = rememberNavController()
 
     NavHost(
         navController = navController,
-        startDestination = Screen.Auth,
+        startDestination = startDestination,
     ) {
         composable<Screen.Auth> {
             AuthScreen()
