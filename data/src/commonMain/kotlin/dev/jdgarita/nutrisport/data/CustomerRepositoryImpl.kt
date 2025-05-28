@@ -2,6 +2,7 @@ package dev.jdgarita.nutrisport.data
 
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.FirebaseUser
+import dev.gitlive.firebase.auth.auth
 import dev.gitlive.firebase.firestore.firestore
 import dev.jdgarita.nutrisport.data.domain.CustomerRepository
 import dev.jdgarita.nutrisport.shared.domain.Customer
@@ -44,4 +45,6 @@ class CustomerRepositoryImpl : CustomerRepository {
     } catch (e: Exception) {
         onError("Error while creating a Customer: ${e.message ?: "Unknown error"}")
     }
+
+    override fun getCurrentUserId() = Firebase.auth.currentUser?.uid
 }
