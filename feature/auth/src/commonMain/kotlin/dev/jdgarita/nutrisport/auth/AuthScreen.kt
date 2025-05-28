@@ -30,9 +30,11 @@ import dev.jdgarita.nutrisport.shared.TextPrimary
 import dev.jdgarita.nutrisport.shared.TextSecondary
 import dev.jdgarita.nutrisport.shared.TextWhite
 import rememberMessageBarState
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun AuthScreen() {
+    val viewModel = koinViewModel<AuthViewModel>()
     val messageBarState = rememberMessageBarState()
     var loadingState by remember { mutableStateOf(false) }
     Scaffold { padding ->
@@ -82,7 +84,15 @@ fun AuthScreen() {
                     linkAccount = false, onResult = { result ->
                         result
                             .onSuccess { usr ->
-                                messageBarState.addSuccess("Authentication successful")
+                                viewModel.createCustomer(
+                                    user = usr,
+                                    onSuccess = {
+                                        messageBarState.addSuccess("Customer created successfully")
+                                    },
+                                    onError = { error ->
+                                        messageBarState.addError(error)
+                                    }
+                                )
                                 loadingState = false
                             }
                             .onFailure { error ->
