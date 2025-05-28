@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dev.jdgarita.nutrisport.auth.AuthScreen
+import dev.jdgarita.nutrisport.home.HomeGraphScreen
 
 @Composable
 fun SetupNavGraph() {
@@ -16,6 +17,10 @@ fun SetupNavGraph() {
     ) {
         composable<Screen.Auth> {
             AuthScreen()
+        }
+
+        composable<Screen.HomeGraph> {
+            HomeGraphScreen()
         }
     }
 }

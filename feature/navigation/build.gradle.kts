@@ -40,6 +40,7 @@ kotlin {
             implementation(libs.compose.navigation)
 
             implementation(project(path = ":feature:auth"))
+            implementation(project(path = ":feature:home"))
         }
     }
 }
