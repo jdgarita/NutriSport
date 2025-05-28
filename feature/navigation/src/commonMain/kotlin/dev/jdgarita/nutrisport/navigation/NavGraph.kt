@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dev.jdgarita.nutrisport.auth.AuthScreen
 import dev.jdgarita.nutrisport.home.HomeGraphScreen
+import dev.jdgarita.nutrisport.shared.navigation.Screen
 
 @Composable
 fun SetupNavGraph(startDestination: Screen = Screen.Auth) {
