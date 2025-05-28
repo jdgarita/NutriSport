@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,11 +30,16 @@ import dev.jdgarita.nutrisport.shared.SurfaceError
 import dev.jdgarita.nutrisport.shared.TextPrimary
 import dev.jdgarita.nutrisport.shared.TextSecondary
 import dev.jdgarita.nutrisport.shared.TextWhite
-import rememberMessageBarState
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
+import rememberMessageBarState
 
 @Composable
-fun AuthScreen() {
+fun AuthScreen(
+    navigateToHome: () -> Unit
+) {
+    val scope = rememberCoroutineScope()
     val viewModel = koinViewModel<AuthViewModel>()
     val messageBarState = rememberMessageBarState()
     var loadingState by remember { mutableStateOf(false) }
@@ -87,7 +93,11 @@ fun AuthScreen() {
                                 viewModel.createCustomer(
                                     user = usr,
                                     onSuccess = {
-                                        messageBarState.addSuccess("Customer created successfully")
+                                        scope.launch {
+                                            messageBarState.addSuccess("Customer created successfully")
+                                            delay(2000)
+                                            navigateToHome()
+                                        }
                                     },
                                     onError = { error ->
                                         messageBarState.addError(error)
