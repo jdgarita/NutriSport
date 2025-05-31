@@ -6,6 +6,7 @@ import dev.gitlive.firebase.auth.auth
 import dev.gitlive.firebase.firestore.firestore
 import dev.jdgarita.nutrisport.data.domain.CustomerRepository
 import dev.jdgarita.nutrisport.shared.domain.Customer
+import dev.jdgarita.nutrisport.shared.util.RequestState
 
 class CustomerRepositoryImpl : CustomerRepository {
 
@@ -47,4 +48,11 @@ class CustomerRepositoryImpl : CustomerRepository {
     }
 
     override fun getCurrentUserId() = Firebase.auth.currentUser?.uid
+
+    override suspend fun signOut() = try {
+        Firebase.auth.signOut()
+        RequestState.Success(Unit)
+    } catch (e: Exception) {
+        RequestState.Error("Error signing out: ${e.message ?: "Unknown error"}")
+    }
 }
