@@ -39,7 +39,10 @@ fun CustomTextField(
     )
 ) {
     val borderColor by animateColorAsState(
-        targetValue = if (error) BorderError else BorderIdle
+        targetValue = when {
+            error -> BorderError
+            else -> BorderIdle
+        }
     )
 
     TextField(
@@ -54,14 +57,14 @@ fun CustomTextField(
         enabled = enabled,
         value = value,
         onValueChange = onValueChange,
-        placeholder = if (placeholder != null) {
+        placeholder = placeholder?.let {
             {
                 Text(
-                    text = placeholder,
+                    text = it,
                     fontSize = FontSize.REGULAR
                 )
             }
-        } else null,
+        },
         singleLine = !expanded,
         shape = RoundedCornerShape(size = 6.dp),
         keyboardOptions = keyboardOptions,
