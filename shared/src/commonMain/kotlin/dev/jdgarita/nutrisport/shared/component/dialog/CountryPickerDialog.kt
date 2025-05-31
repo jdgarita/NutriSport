@@ -198,7 +198,7 @@ fun CountryPicker(
         Text(
             modifier = Modifier.weight(1f),
             text = "+${country.dialCode} (${country.name}) ",
-            fontSize = FontSize.SMALL,
+            fontSize = FontSize.REGULAR,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             color = TextPrimary
