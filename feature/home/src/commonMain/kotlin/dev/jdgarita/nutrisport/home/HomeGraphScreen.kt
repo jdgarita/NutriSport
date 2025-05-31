@@ -71,6 +71,7 @@ fun HomeGraphScreen() {
                                 saveState = true
                                 inclusive = false
                             }
+                            restoreState = true
                         }
                     }
                 )
