@@ -129,15 +129,33 @@ fun HomeGraphScreen() {
                             }
                         },
                         navigationIcon = {
-                            IconButton(onClick = {
-                                drawerState = drawerState.opposite()
-                            }) {
-                                Icon(
-                                    painter = painterResource(Resources.Icon.Menu),
-                                    contentDescription = "Menu Icon",
-                                    tint = IconPrimary
-                                )
+                            AnimatedContent(
+                                targetState = drawerState,
+                                label = "Drawer Icon"
+                            ) { state ->
+                                when (state) {
+                                    CustomDrawerState.Opened -> IconButton(onClick = {
+                                        drawerState = drawerState.opposite()
+                                    }) {
+                                        Icon(
+                                            painter = painterResource(Resources.Icon.Close),
+                                            contentDescription = "Close Drawer Icon",
+                                            tint = IconPrimary
+                                        )
+                                    }
+
+                                    CustomDrawerState.Closed -> IconButton(onClick = {
+                                        drawerState = drawerState.opposite()
+                                    }) {
+                                        Icon(
+                                            painter = painterResource(Resources.Icon.Menu),
+                                            contentDescription = "Open Drawer Icon",
+                                            tint = IconPrimary
+                                        )
+                                    }
+                                }
                             }
+
                         },
                         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                             containerColor = Surface,
