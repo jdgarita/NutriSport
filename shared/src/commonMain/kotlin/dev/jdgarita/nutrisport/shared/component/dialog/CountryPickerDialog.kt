@@ -50,6 +50,7 @@ import dev.jdgarita.nutrisport.shared.SurfaceSecondary
 import dev.jdgarita.nutrisport.shared.TextPrimary
 import dev.jdgarita.nutrisport.shared.TextSecondary
 import dev.jdgarita.nutrisport.shared.component.CustomTextField
+import dev.jdgarita.nutrisport.shared.component.ErrorCard
 import dev.jdgarita.nutrisport.shared.domain.Country
 import org.jetbrains.compose.resources.painterResource
 
@@ -102,19 +103,23 @@ fun CountryPickerDialog(
                     placeholder = "Dial Code"
                 )
                 Spacer(modifier = Modifier.height(12.dp))
-                LazyColumn(
-                    modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    items(
-                        items = filteredCountries,
-                        key = { it.ordinal }
-                    ) { country ->
-                        CountryPicker(
-                            country = country,
-                            isSelected = selectedCountry == country,
-                            onSelected = { selectedCountry = it }
-                        )
+                if (filteredCountries.isEmpty()) {
+                    ErrorCard(
+                        modifier = Modifier.weight(1f),
+                        message = "Dial code not found"
+                    )
+                } else {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(filteredCountries) { country ->
+                            CountryPicker(
+                                country = country,
+                                isSelected = selectedCountry == country,
+                                onSelected = { selectedCountry = it }
+                            )
+                        }
                     }
                 }
             }
