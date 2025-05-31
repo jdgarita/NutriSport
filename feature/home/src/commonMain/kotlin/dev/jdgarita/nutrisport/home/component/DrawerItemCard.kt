@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import dev.jdgarita.nutrisport.home.domain.DrawerItem
 import dev.jdgarita.nutrisport.shared.FontSize
 import dev.jdgarita.nutrisport.shared.IconPrimary
+import dev.jdgarita.nutrisport.shared.TextPrimary
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -40,7 +41,7 @@ fun DrawerItemCard(
         Spacer(modifier = Modifier.width(12.dp))
         Text(
             text = drawerItem.title,
-            color = IconPrimary,
+            color = TextPrimary,
             fontSize = FontSize.EXTRA_REGULAR
         )
     }
