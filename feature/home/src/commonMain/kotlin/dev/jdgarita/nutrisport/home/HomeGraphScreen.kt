@@ -1,6 +1,7 @@
 package dev.jdgarita.nutrisport.home
 
 
+import ContentWithMessageBar
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
@@ -55,11 +56,16 @@ import dev.jdgarita.nutrisport.shared.TextPrimary
 import dev.jdgarita.nutrisport.shared.navigation.Screen
 import dev.jdgarita.nutrisport.shared.util.getScreenWidth
 import org.jetbrains.compose.resources.painterResource
+import org.koin.compose.viewmodel.koinViewModel
+import rememberMessageBarState
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeGraphScreen() {
+fun HomeGraphScreen(navigateToAuth: () -> Unit) {
+    val viewModel = koinViewModel<HomeGraphViewModel>()
+    val messageBarState = rememberMessageBarState()
+
     val navigationController = rememberNavController()
     val currentRoute = navigationController.currentBackStackEntryAsState()
 
@@ -103,7 +109,13 @@ fun HomeGraphScreen() {
         CustomDrawer(
             onProfileClick = {},
             onContactUsClick = {},
-            onSignOutClick = {},
+            onSignOutClick = {
+                viewModel.signOut(
+                    onSuccess = navigateToAuth
+                ) { message ->
+                    messageBarState.addError(message)
+                }
+            },
             onAdminPanelClick = {}
         )
         Box(
@@ -175,38 +187,45 @@ fun HomeGraphScreen() {
                     )
                 },
             ) { padding ->
-                Column(
+                ContentWithMessageBar(
                     modifier = Modifier.fillMaxSize().padding(
                         top = padding.calculateTopPadding(),
                         bottom = padding.calculateBottomPadding()
-                    )
+                    ),
+                    messageBarState = messageBarState,
+                    errorMaxLines = 2,
+                    contentBackgroundColor = Surface
                 ) {
-                    NavHost(
-                        modifier = Modifier.weight(1f),
-                        navController = navigationController,
-                        startDestination = Screen.ProductOverview
+                    Column(
+                        modifier = Modifier.fillMaxSize()
                     ) {
-                        composable<Screen.ProductOverview> {}
-                        composable<Screen.Cart> {}
-                        composable<Screen.Categories> {}
-                    }
-                    Spacer(modifier = Modifier.height(12.dp))
-                    Box(
-                        modifier = Modifier.padding(all = 12.dp)
-                    ) {
-                        BottomBar(
-                            selected = selectedDestination,
-                            onSelect = { destination ->
-                                navigationController.navigate(destination.screen) {
-                                    launchSingleTop = true
-                                    popUpTo(Screen.ProductOverview) {
-                                        saveState = true
-                                        inclusive = false
+                        NavHost(
+                            modifier = Modifier.weight(1f),
+                            navController = navigationController,
+                            startDestination = Screen.ProductOverview
+                        ) {
+                            composable<Screen.ProductOverview> {}
+                            composable<Screen.Cart> {}
+                            composable<Screen.Categories> {}
+                        }
+                        Spacer(modifier = Modifier.height(12.dp))
+                        Box(
+                            modifier = Modifier.padding(all = 12.dp)
+                        ) {
+                            BottomBar(
+                                selected = selectedDestination,
+                                onSelect = { destination ->
+                                    navigationController.navigate(destination.screen) {
+                                        launchSingleTop = true
+                                        popUpTo(Screen.ProductOverview) {
+                                            saveState = true
+                                            inclusive = false
+                                        }
+                                        restoreState = true
                                     }
-                                    restoreState = true
                                 }
-                            }
-                        )
+                            )
+                        }
                     }
                 }
             }
