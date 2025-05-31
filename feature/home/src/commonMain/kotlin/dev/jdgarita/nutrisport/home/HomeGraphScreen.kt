@@ -45,7 +45,15 @@ fun HomeGraphScreen() {
             ) {
                 BottomBar(
                     selected = false,
-                    onSelect = { /* Handle selection */ }
+                    onSelect = { destination ->
+                        navigationController.navigate(destination.screen) {
+                            launchSingleTop = true
+                            popUpTo(Screen.ProductOverview) {
+                                saveState = true
+                                inclusive = false
+                            }
+                        }
+                    }
                 )
             }
         }
