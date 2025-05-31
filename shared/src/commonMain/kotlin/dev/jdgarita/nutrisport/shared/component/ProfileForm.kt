@@ -12,6 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import dev.jdgarita.nutrisport.shared.component.dialog.CountryPickerDialog
+import dev.jdgarita.nutrisport.shared.domain.Country
 
 @Composable
 fun ProfileForm(
@@ -30,6 +32,12 @@ fun ProfileForm(
     phoneNumber: String?,
     onPhoneNumberChange: (String) -> Unit
 ) {
+
+    CountryPickerDialog(
+        country = Country.Serbia,
+        onDismiss = {},
+        onConfirmClick = {}
+    )
     Column(
         modifier = modifier
             .fillMaxSize()
