@@ -12,14 +12,4 @@ import dev.jdgarita.nutrisport.shared.component.PrimaryButton
 
 @Composable
 fun ProfileScreen() {
-
-    Column(
-        modifier = Modifier.fillMaxSize().padding(24.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
-    ) {
-        PrimaryButton(text = "Continue", icon = Resources.Icon.Person, enabled = true) {
-            // Handle button click
-        }
-    }
 }
