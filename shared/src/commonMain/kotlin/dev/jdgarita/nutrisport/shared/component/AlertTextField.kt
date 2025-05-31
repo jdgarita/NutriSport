@@ -40,7 +40,7 @@ fun AlertTextField(
             )
             .clip(RoundedCornerShape(size = 6.dp))
             .clickable(onClick = onClick)
-            .padding(vertical = 20.dp, horizontal = 16.dp),
+            .padding(vertical = 16.dp, horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         icon?.let {
