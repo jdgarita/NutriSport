@@ -98,8 +98,7 @@ fun HomeGraphScreen() {
         modifier = Modifier
             .fillMaxSize()
             .background(animatedBackground)
-            .systemBarsPadding(),
-        contentAlignment = androidx.compose.ui.Alignment.Center
+            .systemBarsPadding()
     ) {
         CustomDrawer(
             onProfileClick = {},
