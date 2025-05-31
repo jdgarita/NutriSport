@@ -33,9 +33,7 @@ fun SetupNavGraph(startDestination: Screen = Screen.Auth) {
                     }
                 },
                 navigateToProfile = {
-                    navController.navigate(Screen.Profile) {
-                        popUpTo(Screen.HomeGraph) { inclusive = true }
-                    }
+                    navController.navigate(Screen.Profile)
                 }
             )
         }
