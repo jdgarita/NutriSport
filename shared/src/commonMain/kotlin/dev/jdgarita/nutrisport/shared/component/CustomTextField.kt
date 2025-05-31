@@ -1,4 +1,4 @@
-package dev.jdgarita.nutrisport.profile.component
+package dev.jdgarita.nutrisport.shared.component
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.border
