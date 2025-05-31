@@ -2,6 +2,7 @@ package dev.jdgarita.nutrisport.home
 
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
@@ -31,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -40,7 +42,9 @@ import dev.jdgarita.nutrisport.home.component.BottomBar
 import dev.jdgarita.nutrisport.home.component.CustomDrawer
 import dev.jdgarita.nutrisport.home.domain.BottomBarDestination
 import dev.jdgarita.nutrisport.home.domain.CustomDrawerState
+import dev.jdgarita.nutrisport.home.domain.isOpened
 import dev.jdgarita.nutrisport.home.domain.opposite
+import dev.jdgarita.nutrisport.shared.Alpha
 import dev.jdgarita.nutrisport.shared.BebasNeueFont
 import dev.jdgarita.nutrisport.shared.FontSize
 import dev.jdgarita.nutrisport.shared.IconPrimary
@@ -64,17 +68,20 @@ fun HomeGraphScreen() {
     val offsetValue by remember { derivedStateOf { (screenWidth / 1.5).dp } }
 
     val animatedOffset by animateDpAsState(
-        targetValue = if (drawerState == CustomDrawerState.Opened) offsetValue else 0.dp
+        targetValue = if (drawerState.isOpened()) offsetValue else 0.dp
     )
 
     val animatedScale by animateFloatAsState(
-        targetValue = if (drawerState == CustomDrawerState.Opened) 0.9f else 1f
+        targetValue = if (drawerState.isOpened()) 0.9f else 1f
     )
 
     val animatedRadius by animateDpAsState(
-        targetValue = if (drawerState == CustomDrawerState.Opened) 20.dp else 0.dp
+        targetValue = if (drawerState.isOpened()) 20.dp else 0.dp
     )
 
+    val animatedBackground by animateColorAsState(
+        targetValue = if (drawerState.isOpened()) SurfaceLighter else Surface
+    )
     val selectedDestination by remember {
         derivedStateOf {
             val route = currentRoute.value?.destination?.route.toString()
@@ -90,7 +97,7 @@ fun HomeGraphScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(SurfaceLighter)
+            .background(animatedBackground)
             .systemBarsPadding(),
         contentAlignment = androidx.compose.ui.Alignment.Center
     ) {
@@ -107,7 +114,9 @@ fun HomeGraphScreen() {
                 .scale(animatedScale)
                 .shadow(
                     elevation = 20.dp,
-                    shape = RoundedCornerShape(size = animatedRadius)
+                    shape = RoundedCornerShape(size = animatedRadius),
+                    ambientColor = Color.Black.copy(alpha = Alpha.DISABLED),
+                    spotColor = Color.Black.copy(alpha = Alpha.DISABLED)
                 )
         ) {
             Scaffold(
