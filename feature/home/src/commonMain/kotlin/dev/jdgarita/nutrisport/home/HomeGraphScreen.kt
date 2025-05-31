@@ -1,6 +1,7 @@
 package dev.jdgarita.nutrisport.home
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -25,12 +26,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dev.jdgarita.nutrisport.home.component.BottomBar
+import dev.jdgarita.nutrisport.home.component.CustomDrawer
 import dev.jdgarita.nutrisport.home.domain.BottomBarDestination
 import dev.jdgarita.nutrisport.shared.BebasNeueFont
 import dev.jdgarita.nutrisport.shared.FontSize
 import dev.jdgarita.nutrisport.shared.IconPrimary
 import dev.jdgarita.nutrisport.shared.Resources
 import dev.jdgarita.nutrisport.shared.Surface
+import dev.jdgarita.nutrisport.shared.SurfaceLighter
 import dev.jdgarita.nutrisport.shared.TextPrimary
 import dev.jdgarita.nutrisport.shared.navigation.Screen
 import org.jetbrains.compose.resources.painterResource
@@ -52,75 +55,88 @@ fun HomeGraphScreen() {
             }
         }
     }
-    Scaffold(
-        containerColor = Surface,
-        topBar = {
-            CenterAlignedTopAppBar(
-                modifier = Modifier.padding(horizontal = 12.dp),
-                title = {
-                    AnimatedContent(
-                        targetState = selectedDestination,
-                        label = "Top Bar Title"
-                    ) { destination ->
-                        Text(
-                            text = destination.title,
-                            fontFamily = BebasNeueFont(),
-                            fontSize = FontSize.LARGE,
-                            color = TextPrimary
-                        )
-                    }
-                },
-                navigationIcon = {
-                    IconButton(onClick = {}) {
-                        Icon(
-                            painter = painterResource(Resources.Icon.Menu),
-                            contentDescription = "Menu Icon",
-                            tint = IconPrimary
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = Surface,
-                    scrolledContainerColor = Surface,
-                    titleContentColor = TextPrimary,
-                    navigationIconContentColor = IconPrimary,
-                    actionIconContentColor = IconPrimary
-                )
-            )
-        },
-    ) { padding ->
-        Column(
-            modifier = Modifier.fillMaxSize().padding(
-                top = padding.calculateTopPadding(),
-                bottom = padding.calculateBottomPadding()
-            )
-        ) {
-            NavHost(
-                modifier = Modifier.weight(1f),
-                navController = navigationController,
-                startDestination = Screen.ProductOverview
-            ) {
-                composable<Screen.ProductOverview> {}
-                composable<Screen.Cart> {}
-                composable<Screen.Categories> {}
-            }
-            Spacer(modifier = Modifier.height(12.dp))
-            Box(
-                modifier = Modifier.padding(all = 12.dp)
-            ) {
-                BottomBar(
-                    selected = selectedDestination,
-                    onSelect = { destination ->
-                        navigationController.navigate(destination.screen) {
-                            launchSingleTop = true
-                            popUpTo(Screen.ProductOverview) {
-                                saveState = true
-                                inclusive = false
-                            }
-                            restoreState = true
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(SurfaceLighter),
+        contentAlignment = androidx.compose.ui.Alignment.Center
+    ) {
+        CustomDrawer(
+            onProfileClick = {},
+            onContactUsClick = {},
+            onSignOutClick = {},
+            onAdminPanelClick = {}
+        )
+        Scaffold(
+            containerColor = Surface,
+            topBar = {
+                CenterAlignedTopAppBar(
+                    modifier = Modifier.padding(horizontal = 12.dp),
+                    title = {
+                        AnimatedContent(
+                            targetState = selectedDestination,
+                            label = "Top Bar Title"
+                        ) { destination ->
+                            Text(
+                                text = destination.title,
+                                fontFamily = BebasNeueFont(),
+                                fontSize = FontSize.LARGE,
+                                color = TextPrimary
+                            )
                         }
-                    }
+                    },
+                    navigationIcon = {
+                        IconButton(onClick = {}) {
+                            Icon(
+                                painter = painterResource(Resources.Icon.Menu),
+                                contentDescription = "Menu Icon",
+                                tint = IconPrimary
+                            )
+                        }
+                    },
+                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                        containerColor = Surface,
+                        scrolledContainerColor = Surface,
+                        titleContentColor = TextPrimary,
+                        navigationIconContentColor = IconPrimary,
+                        actionIconContentColor = IconPrimary
+                    )
                 )
+            },
+        ) { padding ->
+            Column(
+                modifier = Modifier.fillMaxSize().padding(
+                    top = padding.calculateTopPadding(),
+                    bottom = padding.calculateBottomPadding()
+                )
+            ) {
+                NavHost(
+                    modifier = Modifier.weight(1f),
+                    navController = navigationController,
+                    startDestination = Screen.ProductOverview
+                ) {
+                    composable<Screen.ProductOverview> {}
+                    composable<Screen.Cart> {}
+                    composable<Screen.Categories> {}
+                }
+                Spacer(modifier = Modifier.height(12.dp))
+                Box(
+                    modifier = Modifier.padding(all = 12.dp)
+                ) {
+                    BottomBar(
+                        selected = selectedDestination,
+                        onSelect = { destination ->
+                            navigationController.navigate(destination.screen) {
+                                launchSingleTop = true
+                                popUpTo(Screen.ProductOverview) {
+                                    saveState = true
+                                    inclusive = false
+                                }
+                                restoreState = true
+                            }
+                        }
+                    )
+                }
             }
         }
     }
