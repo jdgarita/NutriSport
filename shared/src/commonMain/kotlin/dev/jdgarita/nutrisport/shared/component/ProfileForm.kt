@@ -79,11 +79,11 @@ fun ProfileForm(
             error = address.length !in 3..50
         )
         CustomTextField(
-            value = phoneNumber ?: "",
+            value = phoneNumber.orEmpty(),
             onValueChange = onPhoneNumberChange,
             placeholder = "Phone Number",
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-            error = phoneNumber?.length !in 3..50
+            error = phoneNumber.toString().length !in 3..30
         )
     }
 }
