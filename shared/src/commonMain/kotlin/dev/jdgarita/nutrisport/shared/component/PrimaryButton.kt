@@ -1,6 +1,8 @@
 package dev.jdgarita.nutrisport.shared.component
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,12 +24,14 @@ import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun PrimaryButton(
+    modifier: Modifier = Modifier,
     text: String,
     icon: DrawableResource? = null,
     enabled: Boolean = true,
     onClick: () -> Unit
 ) {
     Button(
+        modifier = modifier.fillMaxWidth(),
         onClick = onClick,
         enabled = enabled,
         shape = RoundedCornerShape(size = 6.dp),
@@ -36,7 +40,8 @@ fun PrimaryButton(
             contentColor = TextPrimary,
             disabledContainerColor = ButtonDisabled,
             disabledContentColor = TextPrimary.copy(alpha = Alpha.DISABLED)
-        )
+        ),
+        contentPadding = PaddingValues(all = 20.dp)
     ) {
         icon?.let {
             Icon(
