@@ -2,6 +2,8 @@ package dev.jdgarita.nutrisport.shared.component.dialog
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -12,30 +14,93 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.ColorMatrix
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import dev.jdgarita.nutrisport.shared.Alpha
 import dev.jdgarita.nutrisport.shared.FontSize
 import dev.jdgarita.nutrisport.shared.IconWhite
 import dev.jdgarita.nutrisport.shared.Resources
+import dev.jdgarita.nutrisport.shared.Surface
 import dev.jdgarita.nutrisport.shared.SurfaceLighter
 import dev.jdgarita.nutrisport.shared.SurfaceSecondary
 import dev.jdgarita.nutrisport.shared.TextPrimary
+import dev.jdgarita.nutrisport.shared.TextSecondary
 import dev.jdgarita.nutrisport.shared.domain.Country
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun CountryPickerDialog(
-    onDismissRequest: () -> Unit,
-    onCountrySelected: (String) -> Unit
+    country: Country,
+    onDismiss: () -> Unit,
+    onConfirmClick: (Country) -> Unit
 ) {
+    var selectedCountry by remember(country) { mutableStateOf(country) }
 
+    AlertDialog(
+        containerColor = Surface,
+        title = {
+            Text(
+                text = "Pick a Country",
+                fontSize = FontSize.EXTRA_MEDIUM,
+                color = TextPrimary
+            )
+        },
+        text = {
+
+        },
+        onDismissRequest = onDismiss,
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    onConfirmClick(selectedCountry)
+                    onDismiss()
+                },
+                colors = ButtonDefaults.textButtonColors(
+                    containerColor = Color.Transparent,
+                    contentColor = TextSecondary
+                )
+            ) {
+                Text(
+                    text = "Confirm",
+                    fontSize = FontSize.REGULAR,
+                    fontWeight = FontWeight.Medium
+                )
+            }
+        },
+        dismissButton = {
+            TextButton(
+                onClick = { onDismiss() },
+                colors = ButtonDefaults.textButtonColors(
+                    containerColor = Color.Transparent,
+                    contentColor = TextPrimary.copy(alpha = Alpha.HALF)
+                )
+            ) {
+                Text(
+                    text = "Cancel",
+                    fontSize = FontSize.REGULAR,
+                    fontWeight = FontWeight.Medium
+                )
+            }
+        }
+    )
 }
 
 @Composable
@@ -45,6 +110,21 @@ fun CountryPicker(
     isSelected: Boolean = false,
     onSelected: (Country) -> Unit
 ) {
+    val saturation = remember { Animatable(if (isSelected) 1f else 0f) }
+
+    LaunchedEffect(isSelected) {
+        saturation.animateTo(
+            targetValue = if (isSelected) 1f else 0f,
+            animationSpec = tween(durationMillis = 300)
+        )
+    }
+
+    val colorMatrix = remember(saturation.value) {
+        ColorMatrix().apply {
+            setToSaturation(saturation.value)
+        }
+    }
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -59,6 +139,7 @@ fun CountryPicker(
             painter = painterResource(country.flag),
             contentDescription = "Country flag",
             alignment = Alignment.Center,
+            colorFilter = ColorFilter.colorMatrix(colorMatrix)
         )
         Spacer(modifier = Modifier.size(12.dp))
         Text(
