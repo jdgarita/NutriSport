@@ -62,10 +62,13 @@ fun ProfileScreen(
         })
     { padding ->
         Column(
-            modifier = Modifier.padding(
-                top = padding.calculateTopPadding(),
-                bottom = padding.calculateBottomPadding()
-            )
+            modifier = Modifier
+                .padding(
+                    top = padding.calculateTopPadding(),
+                    bottom = padding.calculateBottomPadding(),
+                ).padding(
+                    horizontal = 24.dp
+                )
         ) {
             ProfileForm(
                 modifier = Modifier.weight(1f),
