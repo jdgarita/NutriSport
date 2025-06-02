@@ -7,6 +7,9 @@ import dev.gitlive.firebase.firestore.firestore
 import dev.jdgarita.nutrisport.data.domain.CustomerRepository
 import dev.jdgarita.nutrisport.shared.domain.Customer
 import dev.jdgarita.nutrisport.shared.util.RequestState
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.collectLatest
 
 class CustomerRepositoryImpl : CustomerRepository {
 
@@ -54,5 +57,40 @@ class CustomerRepositoryImpl : CustomerRepository {
         RequestState.Success(Unit)
     } catch (e: Exception) {
         RequestState.Error("Error signing out: ${e.message ?: "Unknown error"}")
+    }
+
+    override fun readCustomerFlow(): Flow<RequestState<Customer?>> = channelFlow {
+        try {
+            val userId = getCurrentUserId()
+            if (userId != null) {
+                val database = Firebase.firestore
+                database.collection("Customer")
+                    .document(userId)
+                    .snapshots
+                    .collectLatest { document ->
+                        if (document.exists) {
+                            val customer = Customer(
+                                id = document.id,
+                                firstName = document.get("firstName"),
+                                lastName = document.get("lastName"),
+                                email = document.get("email"),
+                                city = document.get("city"),
+                                postalCode = document.get("postalCode"),
+                                address = document.get("address"),
+                                phoneNumber = document.get("phoneNumber"),
+                                cart = document.get("cart"),
+                                isAdmin = document.get("isAdmin")
+                            )
+                            send(RequestState.Success(customer))
+                        } else {
+                            send(RequestState.Error("Queried customer document does not exist"))
+                        }
+                    }
+            } else {
+                send(RequestState.Error("User is not found"))
+            }
+        } catch (e: Exception) {
+            send(RequestState.Error("Error while reading a customer info : ${e.message}"))
+        }
     }
 }
