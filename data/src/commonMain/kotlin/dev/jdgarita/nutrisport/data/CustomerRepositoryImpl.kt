@@ -64,7 +64,7 @@ class CustomerRepositoryImpl : CustomerRepository {
             val userId = getCurrentUserId()
             if (userId != null) {
                 val database = Firebase.firestore
-                database.collection("Customer")
+                database.collection("customer")
                     .document(userId)
                     .snapshots
                     .collectLatest { document ->
