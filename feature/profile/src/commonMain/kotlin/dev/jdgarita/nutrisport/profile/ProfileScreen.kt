@@ -11,10 +11,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.jdgarita.nutrisport.shared.BebasNeueFont
@@ -25,15 +21,16 @@ import dev.jdgarita.nutrisport.shared.Surface
 import dev.jdgarita.nutrisport.shared.TextPrimary
 import dev.jdgarita.nutrisport.shared.component.PrimaryButton
 import dev.jdgarita.nutrisport.shared.component.ProfileForm
-import dev.jdgarita.nutrisport.shared.domain.Country
 import org.jetbrains.compose.resources.painterResource
+import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
     navigateBack: () -> Unit,
 ) {
-    var country by remember { mutableStateOf(Country.Serbia) }
+    val viewModel = koinViewModel<ProfileViewModel>()
+    val screenState = viewModel.screenState
 
     Scaffold(
         containerColor = Surface,
@@ -71,23 +68,21 @@ fun ProfileScreen(
         ) {
             ProfileForm(
                 modifier = Modifier.weight(1f),
-                firstName = "Juan Diego",
-                onFirstNameChange = {},
-                lastName = "Garita Segura",
-                onLastNameChange = {},
-                email = "",
-                city = "",
-                onCityChange = {},
-                postalCode = null,
-                onPostalCodeChange = {},
-                address = "",
-                onAddressChange = {},
-                phoneNumber = null,
-                onPhoneNumberChange = {},
-                country = country,
-                onCountrySelect = { selectedCountry ->
-                    country = selectedCountry
-                }
+                firstName = screenState.firstName,
+                onFirstNameChange = viewModel::updateFirstName,
+                lastName = screenState.lastName,
+                onLastNameChange = viewModel::updateLastName,
+                email = screenState.email,
+                city = screenState.city ?: "",
+                onCityChange = viewModel::updateCity,
+                postalCode = screenState.postalCode,
+                onPostalCodeChange = viewModel::updatePostalCode,
+                address = screenState.address ?: "",
+                onAddressChange = viewModel::updateAddress,
+                phoneNumber = screenState.phoneNumber?.number,
+                onPhoneNumberChange = viewModel::updatePhoneNumber,
+                country = screenState.country,
+                onCountrySelect = viewModel::updateCountry
             )
             Spacer(modifier = Modifier.height(12.dp))
             PrimaryButton(
