@@ -34,7 +34,7 @@ fun ProfileForm(
     lastName: String,
     onLastNameChange: (String) -> Unit,
     email: String,
-    city: String,
+    city: String?,
     onCityChange: (String) -> Unit,
     postalCode: Int?,
     onPostalCodeChange: (Int?) -> Unit,
@@ -86,10 +86,10 @@ fun ProfileForm(
             enabled = false
         )
         CustomTextField(
-            value = city,
+            value = city ?: "",
             onValueChange = onCityChange,
             placeholder = "City",
-            error = city.length !in 3..50
+            error = city?.length !in 3..50
         )
         CustomTextField(
             value = "${postalCode ?: ""}",
