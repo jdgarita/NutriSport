@@ -36,7 +36,7 @@ class ProfileViewModel(
             initialValue = RequestState.Loading
         )
 
-    var screenState: ProfileScreenState? by mutableStateOf(ProfileScreenState())
+    var screenState: ProfileScreenState by mutableStateOf(ProfileScreenState())
         private set
 
     init {
@@ -59,9 +59,48 @@ class ProfileViewModel(
                         )
                     }
                 } else if (data.isError()) {
-                    screenState = null
+                    println("[JD] Error fetching customer data: ${data.getErrorMessage()}")
                 }
             }
         }
+    }
+
+
+    fun updateFirstName(value: String) {
+        screenState = screenState.copy(firstName = value)
+    }
+
+    fun updateLastName(value: String) {
+        screenState = screenState.copy(lastName = value)
+    }
+
+    fun updateCity(value: String) {
+        screenState = screenState.copy(city = value)
+    }
+
+    fun updatePostalCode(value: Int?) {
+        screenState = screenState.copy(postalCode = value)
+    }
+
+    fun updateAddress(value: String) {
+        screenState = screenState.copy(address = value)
+    }
+
+    fun updateCountry(value: Country) {
+        screenState = screenState.copy(
+            country = value,
+            phoneNumber = screenState.phoneNumber?.copy(
+                dialCode = value.dialCode
+            )
+        )
+    }
+
+    fun updatePhoneNumber(value: String) {
+        screenState = screenState.copy(
+            phoneNumber = PhoneNumber(
+                dialCode = screenState.country.dialCode,
+                number = value
+            )
+        )
     }
 }
