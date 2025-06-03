@@ -7,12 +7,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.jdgarita.nutrisport.data.domain.CustomerRepository
 import dev.jdgarita.nutrisport.shared.domain.Country
+import dev.jdgarita.nutrisport.shared.domain.Customer
 import dev.jdgarita.nutrisport.shared.domain.PhoneNumber
 import dev.jdgarita.nutrisport.shared.util.RequestState
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 data class ProfileScreenState(
+    val id: String = "",
     val firstName: String = "",
     val lastName: String = "",
     val email: String = "",
@@ -38,6 +40,7 @@ class ProfileViewModel(
                     val fetchedCustomer = data.getSuccessData()
                     if (fetchedCustomer != null) {
                         screenState = ProfileScreenState(
+                            id = fetchedCustomer.id,
                             firstName = fetchedCustomer.firstName,
                             lastName = fetchedCustomer.lastName,
                             email = fetchedCustomer.email,
@@ -58,6 +61,29 @@ class ProfileViewModel(
         }
     }
 
+    fun updateCustomer(
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+        viewModelScope.launch {
+            customerRepository.updateCustomer(
+                customer = with(screenState) {
+                    Customer(
+                        id = id,
+                        firstName = firstName,
+                        lastName = lastName,
+                        email = email,
+                        city = city,
+                        postalCode = postalCode,
+                        address = address,
+                        phoneNumber = phoneNumber
+                    )
+                },
+                onSuccess = onSuccess,
+                onError = onError
+            )
+        }
+    }
 
     fun updateFirstName(value: String) {
         screenState = screenState.copy(firstName = value)
