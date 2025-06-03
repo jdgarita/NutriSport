@@ -9,7 +9,9 @@ struct iOSApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView().onOpenURL(
+            ContentView()
+                .ignoresSafeArea()
+                .onOpenURL(
                 perform: { url in
                             GIDSignIn.sharedInstance.handle(url)
                         }
