@@ -41,7 +41,7 @@ fun InfoCard(
             fontSize = FontSize.EXTRA_MEDIUM,
             fontWeight = FontWeight.Bold
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = subtitle,
             fontSize = FontSize.REGULAR
