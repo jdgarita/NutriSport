@@ -95,7 +95,7 @@ fun ProfileForm(
             onValueChange = { onPostalCodeChange(it.toIntOrNull()) },
             placeholder = "Postal Code",
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            error = postalCode.toString().length !in 3..8
+            error = postalCode == null || postalCode.toString().length !in 3..8
         )
         CustomTextField(
             value = address.orEmpty(),
