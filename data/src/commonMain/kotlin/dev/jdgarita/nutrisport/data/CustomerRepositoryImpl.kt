@@ -101,6 +101,7 @@ class CustomerRepositoryImpl : CustomerRepository {
     ) {
         try {
             val userId = getCurrentUserId()
+            println("[JD] User ID: $userId | Customer ID: ${customer.id}")
             if (userId != null) {
                 onError("User is not available.")
             } else {
