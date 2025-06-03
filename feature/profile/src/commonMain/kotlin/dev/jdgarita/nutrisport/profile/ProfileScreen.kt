@@ -129,7 +129,14 @@ fun ProfileScreen(
                                 text = "Update",
                                 icon = Resources.Icon.Checkmark,
                             ) {
-
+                                viewModel.updateCustomer(
+                                    onSuccess = {
+                                        messageBarState.addSuccess("Customer updated successfully.")
+                                    },
+                                    onError = { errorMessage ->
+                                        messageBarState.addError(errorMessage)
+                                    }
+                                )
                             }
                         }
                     }
