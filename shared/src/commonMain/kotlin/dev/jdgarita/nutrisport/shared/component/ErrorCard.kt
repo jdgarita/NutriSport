@@ -7,12 +7,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
 import dev.jdgarita.nutrisport.shared.FontSize
 
 @Composable
 fun ErrorCard(
     modifier: Modifier = Modifier,
-    message: String
+    message: String,
+    fontSize: TextUnit = FontSize.SMALL
 ) {
     Box(
         modifier = modifier,
@@ -22,7 +24,7 @@ fun ErrorCard(
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center,
             text = message,
-            fontSize = FontSize.SMALL
+            fontSize = fontSize
         )
     }
 }
