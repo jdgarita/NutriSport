@@ -25,7 +25,6 @@ import dev.jdgarita.nutrisport.shared.SurfaceBrand
 import dev.jdgarita.nutrisport.shared.SurfaceError
 import dev.jdgarita.nutrisport.shared.TextPrimary
 import dev.jdgarita.nutrisport.shared.TextWhite
-import dev.jdgarita.nutrisport.shared.component.ErrorCard
 import dev.jdgarita.nutrisport.shared.component.InfoCard
 import dev.jdgarita.nutrisport.shared.component.LoadingCard
 import dev.jdgarita.nutrisport.shared.component.PrimaryButton
