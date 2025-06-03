@@ -120,7 +120,6 @@ fun ProfileForm(
                 placeholder = "Phone Number",
                 error = phoneNumber.toString().length !in 3..30,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone)
-
             )
         }
     }
