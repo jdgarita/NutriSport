@@ -36,6 +36,7 @@ class ProfileViewModel(
             initialValue = RequestState.Loading
         )
 
+    var screenReady: RequestState<Unit> by mutableStateOf(RequestState.Loading)
     var screenState: ProfileScreenState by mutableStateOf(ProfileScreenState())
         private set
 
@@ -58,8 +59,9 @@ class ProfileViewModel(
                             } ?: Country.Serbia
                         )
                     }
+                    screenReady = RequestState.Success(Unit)
                 } else if (data.isError()) {
-                    println("[JD] Error fetching customer data: ${data.getErrorMessage()}")
+                    screenReady = RequestState.Error(data.getErrorMessage())
                 }
             }
         }
