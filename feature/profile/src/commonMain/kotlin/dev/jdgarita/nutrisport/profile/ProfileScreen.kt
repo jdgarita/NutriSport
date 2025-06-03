@@ -42,6 +42,7 @@ fun ProfileScreen(
     val viewModel = koinViewModel<ProfileViewModel>()
     val screenState = viewModel.screenState
     val screenReady = viewModel.screenReady
+    val isFormValid = viewModel.isFormValid
     val messageBarState = rememberMessageBarState()
 
     Scaffold(
@@ -128,6 +129,7 @@ fun ProfileScreen(
                             PrimaryButton(
                                 text = "Update",
                                 icon = Resources.Icon.Checkmark,
+                                enabled = isFormValid
                             ) {
                                 viewModel.updateCustomer(
                                     onSuccess = {
