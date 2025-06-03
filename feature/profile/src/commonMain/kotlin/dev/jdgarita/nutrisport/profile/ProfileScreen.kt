@@ -26,6 +26,7 @@ import dev.jdgarita.nutrisport.shared.SurfaceError
 import dev.jdgarita.nutrisport.shared.TextPrimary
 import dev.jdgarita.nutrisport.shared.TextWhite
 import dev.jdgarita.nutrisport.shared.component.ErrorCard
+import dev.jdgarita.nutrisport.shared.component.InfoCard
 import dev.jdgarita.nutrisport.shared.component.LoadingCard
 import dev.jdgarita.nutrisport.shared.component.PrimaryButton
 import dev.jdgarita.nutrisport.shared.component.ProfileForm
@@ -101,8 +102,10 @@ fun ProfileScreen(
                         LoadingCard(modifier = Modifier.fillMaxSize())
                     },
                     onError = { errorMessage ->
-                        ErrorCard(
-                            message = errorMessage
+                        InfoCard(
+                            image = Resources.Image.Cat,
+                            title = "Oops",
+                            subtitle = errorMessage
                         )
                     },
                     onSuccess = {
