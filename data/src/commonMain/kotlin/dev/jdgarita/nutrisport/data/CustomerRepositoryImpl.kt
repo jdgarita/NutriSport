@@ -110,7 +110,15 @@ class CustomerRepositoryImpl : CustomerRepository {
                 val existingCustomer = customerCollection.document(customer.id).get()
 
                 if (existingCustomer.exists) {
-                    customerCollection.document(customer.id).update(customer)
+                    customerCollection.document(customer.id).update(
+                        "firstName" to customer.firstName,
+                        "lastName" to customer.lastName,
+                        "email" to customer.email,
+                        "city" to customer.city,
+                        "postalCode" to customer.postalCode,
+                        "address" to customer.address,
+                        "phoneNumber" to customer.phoneNumber
+                    )
                     onSuccess()
                 } else {
                     onError("Customer not found.")
