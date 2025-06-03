@@ -63,9 +63,8 @@ fun ProfileForm(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .verticalScroll(state = rememberScrollState())
-            .imePadding(),
-        verticalArrangement = Arrangement.spacedBy(space = 12.dp)
+            .verticalScroll(state = rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         CustomTextField(
             value = firstName,
