@@ -38,7 +38,7 @@ fun ProfileForm(
     onCityChange: (String) -> Unit,
     postalCode: Int?,
     onPostalCodeChange: (Int?) -> Unit,
-    address: String,
+    address: String?,
     onAddressChange: (String) -> Unit,
     phoneNumber: String?,
     onPhoneNumberChange: (String) -> Unit
@@ -99,17 +99,10 @@ fun ProfileForm(
             error = postalCode.toString().length !in 3..8
         )
         CustomTextField(
-            value = address,
+            value = address.orEmpty(),
             onValueChange = onAddressChange,
             placeholder = "Address",
-            error = address.length !in 3..50
-        )
-        CustomTextField(
-            value = phoneNumber.orEmpty(),
-            onValueChange = onPhoneNumberChange,
-            placeholder = "Phone Number",
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-            error = phoneNumber.toString().length !in 3..30
+            error = address?.length !in 3..50
         )
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -123,11 +116,12 @@ fun ProfileForm(
             Spacer(modifier = Modifier.width(12.dp))
 
             CustomTextField(
-                value = "",
-                onValueChange = {},
-                placeholder = null,
-                error = false,
-                expanded = false
+                value = phoneNumber.orEmpty(),
+                onValueChange = onPhoneNumberChange,
+                placeholder = "Phone Number",
+                error = phoneNumber.toString().length !in 3..30,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone)
+
             )
         }
     }
