@@ -33,6 +33,16 @@ class ProfileViewModel(
     var screenState: ProfileScreenState by mutableStateOf(ProfileScreenState())
         private set
 
+    val isFormValid: Boolean
+        get() = with(screenState) {
+            firstName.length in 3..50 &&
+                    lastName.length in 3..50 &&
+                    city?.length in 3..50 &&
+                    postalCode?.toString()?.length in 3..8 &&
+                    address?.length in 3..50 &&
+                    phoneNumber?.number?.length in 5..30
+        }
+
     init {
         viewModelScope.launch {
             customerRepository.readCustomerFlow().collectLatest { data ->
@@ -67,18 +77,16 @@ class ProfileViewModel(
     ) {
         viewModelScope.launch {
             customerRepository.updateCustomer(
-                customer = with(screenState) {
-                    Customer(
-                        id = id,
-                        firstName = firstName,
-                        lastName = lastName,
-                        email = email,
-                        city = city,
-                        postalCode = postalCode,
-                        address = address,
-                        phoneNumber = phoneNumber
-                    )
-                },
+                customer = Customer(
+                    id = screenState.id,
+                    firstName = screenState.firstName,
+                    lastName = screenState.lastName,
+                    email = screenState.email,
+                    city = screenState.city,
+                    postalCode = screenState.postalCode,
+                    address = screenState.address,
+                    phoneNumber = screenState.phoneNumber
+                ),
                 onSuccess = onSuccess,
                 onError = onError
             )
