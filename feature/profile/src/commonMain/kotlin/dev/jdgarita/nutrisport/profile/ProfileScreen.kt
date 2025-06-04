@@ -37,7 +37,7 @@ import rememberMessageBarState
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
-    navigateBack: () -> Unit,
+    navigateBack: () -> Unit
 ) {
     val viewModel = koinViewModel<ProfileViewModel>()
     val screenState = viewModel.screenState
