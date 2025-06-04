@@ -1,0 +1,49 @@
+package dev.jdgarita.nutrisport.admin_panel
+
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import dev.jdgarita.nutrisport.shared.BebasNeueFont
+import dev.jdgarita.nutrisport.shared.FontSize
+import dev.jdgarita.nutrisport.shared.IconPrimary
+import dev.jdgarita.nutrisport.shared.Resources
+import dev.jdgarita.nutrisport.shared.Surface
+import dev.jdgarita.nutrisport.shared.TextPrimary
+import org.jetbrains.compose.resources.painterResource
+
+@Composable
+fun AdminPanelScreen(
+    navigateBack: () -> Unit
+) {
+    Scaffold(
+        containerColor = Surface,
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = "Admin Panel",
+                        fontFamily = BebasNeueFont(),
+                        fontSize = FontSize.LARGE,
+                        color = TextPrimary
+                    )
+                },
+                navigationIcon = {
+                    IconButton(
+                        onClick = navigateBack
+                    ) {
+                        Icon(
+                            painter = painterResource(Resources.Icon.BackArrow),
+                            contentDescription = "Back arrow icon",
+                            tint = IconPrimary
+                        )
+                    }
+                }
+            )
+        }
+    )
+    { padding ->
+    }
+}
