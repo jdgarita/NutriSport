@@ -1,8 +1,8 @@
 package dev.jdgarita.nutrisport.admin_panel
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material.FloatingActionButton
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -11,6 +11,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import dev.jdgarita.nutrisport.shared.BebasNeueFont
+import dev.jdgarita.nutrisport.shared.ButtonPrimary
 import dev.jdgarita.nutrisport.shared.FontSize
 import dev.jdgarita.nutrisport.shared.IconPrimary
 import dev.jdgarita.nutrisport.shared.Resources
@@ -69,6 +70,7 @@ fun AdminPanelScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { /* Handle action */ },
+                containerColor = ButtonPrimary,
                 contentColor = IconPrimary
             ) {
                 Icon(
