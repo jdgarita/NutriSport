@@ -1,5 +1,7 @@
 package dev.jdgarita.nutrisport.admin_panel
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -14,6 +16,7 @@ import dev.jdgarita.nutrisport.shared.Surface
 import dev.jdgarita.nutrisport.shared.TextPrimary
 import org.jetbrains.compose.resources.painterResource
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AdminPanelScreen(
     navigateBack: () -> Unit
@@ -40,10 +43,25 @@ fun AdminPanelScreen(
                             tint = IconPrimary
                         )
                     }
+                },
+                actions = {
+                    IconButton(
+                        onClick = { /* Handle action */ }
+                    ) {
+                        Icon(
+                            painter = painterResource(Resources.Icon.Search),
+                            contentDescription = "Search icon",
+                            tint = IconPrimary
+                        )
+                    }
                 }
             )
         }
     )
     { padding ->
+
+        Column {
+
+        }
     }
 }
