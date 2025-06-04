@@ -35,6 +35,9 @@ fun SetupNavGraph(startDestination: Screen = Screen.Auth) {
                 },
                 navigateToProfile = {
                     navController.navigate(Screen.Profile)
+                },
+                navigateToAdminPanel = {
+                    navController.navigate(Screen.AdminPanel)
                 }
             )
         }

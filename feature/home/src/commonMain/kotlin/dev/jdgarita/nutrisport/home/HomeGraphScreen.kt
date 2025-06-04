@@ -64,7 +64,8 @@ import rememberMessageBarState
 @Composable
 fun HomeGraphScreen(
     navigateToAuth: () -> Unit,
-    navigateToProfile: () -> Unit
+    navigateToProfile: () -> Unit,
+    navigateToAdminPanel: () -> Unit
 ) {
     val viewModel = koinViewModel<HomeGraphViewModel>()
     val messageBarState = rememberMessageBarState()
@@ -119,7 +120,7 @@ fun HomeGraphScreen(
                     messageBarState.addError(message)
                 }
             },
-            onAdminPanelClick = {}
+            onAdminPanelClick = navigateToAdminPanel
         )
         Box(
             modifier = Modifier.fillMaxSize()
