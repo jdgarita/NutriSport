@@ -1,5 +1,14 @@
 package dev.jdgarita.nutrisport.shared.domain
 
+import androidx.compose.ui.graphics.Color
+import dev.jdgarita.nutrisport.shared.CategoryBlue
+import dev.jdgarita.nutrisport.shared.CategoryGreen
+import dev.jdgarita.nutrisport.shared.CategoryPurple
+import dev.jdgarita.nutrisport.shared.CategoryRed
+import dev.jdgarita.nutrisport.shared.CategoryYellow
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Product(
     val id: String,
     val title: String,
@@ -13,3 +22,29 @@ data class Product(
     val isDiscounted: Boolean = false,
     val isNew: Boolean = false
 )
+
+enum class ProductCategory(
+    val title: String,
+    val color: Color
+) {
+    Protein(
+        title = "Protein",
+        color = CategoryYellow
+    ),
+    Creatine(
+        title = "Creatine",
+        color = CategoryBlue
+    ),
+    PreWorkout(
+        title = "Pre-Workout",
+        color = CategoryGreen
+    ),
+    Gainers(
+        title = "Gainers",
+        color = CategoryPurple
+    ),
+    Accessories(
+        title = "Accessories",
+        color = CategoryRed
+    )
+}
