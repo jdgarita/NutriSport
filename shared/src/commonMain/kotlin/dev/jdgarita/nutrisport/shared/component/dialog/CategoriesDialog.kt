@@ -1,5 +1,6 @@
 package dev.jdgarita.nutrisport.shared.component.dialog
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -64,7 +65,7 @@ fun CategoriesDialog(
                     val animatedBackground by animateColorAsState(
                         targetValue = when {
                             currentCategory == selectedCategory ->
-                                category.color.copy(alpha = Alpha.TWENTY_PERCENT)
+                                currentCategory.color.copy(alpha = Alpha.TWENTY_PERCENT)
 
                             else -> Color.Transparent
                         }
@@ -75,7 +76,10 @@ fun CategoriesDialog(
                             .clip(RoundedCornerShape(size = 6.dp))
                             .background(animatedBackground)
                             .clickable { selectedCategory = currentCategory }
-                            .padding(all = 12.dp)
+                            .padding(
+                                vertical = 16.dp,
+                                horizontal = 12.dp
+                            )
                     ) {
                         Text(
                             modifier = Modifier.weight(1f),
@@ -84,12 +88,16 @@ fun CategoriesDialog(
                             color = TextPrimary
                         )
                         Spacer(modifier = Modifier.width(12.dp))
-                        Icon(
-                            modifier = Modifier.size(14.dp),
-                            painter = painterResource(Resources.Icon.Checkmark),
-                            contentDescription = "Checkmark icon",
-                            tint = IconPrimary
-                        )
+                        AnimatedVisibility(
+                            visible = currentCategory == selectedCategory
+                        ) {
+                            Icon(
+                                modifier = Modifier.size(14.dp),
+                                painter = painterResource(Resources.Icon.Checkmark),
+                                contentDescription = "Checkmark icon",
+                                tint = IconPrimary
+                            )
+                        }
                     }
                 }
             }
