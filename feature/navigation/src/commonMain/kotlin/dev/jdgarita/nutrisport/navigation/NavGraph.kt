@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import dev.jdgarita.nutrisport.admin_panel.AdminPanelScreen
 import dev.jdgarita.nutrisport.auth.AuthScreen
 import dev.jdgarita.nutrisport.home.HomeGraphScreen
@@ -56,7 +57,10 @@ fun SetupNavGraph(startDestination: Screen = Screen.Auth) {
         }
 
         composable<Screen.ManageProduct> {
-            ManageProductScreen {
+            val id = it.toRoute<Screen.ManageProduct>().id
+            ManageProductScreen(
+                id = id,
+            ) {
                 navController.navigateUp()
             }
         }
