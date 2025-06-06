@@ -43,6 +43,7 @@ import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import dev.jdgarita.nutrisport.manage_product.util.PhotoPicker
 import dev.jdgarita.nutrisport.shared.BebasNeueFont
 import dev.jdgarita.nutrisport.shared.BorderIdle
 import dev.jdgarita.nutrisport.shared.FontSize
@@ -61,6 +62,7 @@ import dev.jdgarita.nutrisport.shared.component.dialog.CategoriesDialog
 import dev.jdgarita.nutrisport.shared.util.DisplayResult
 import dev.jdgarita.nutrisport.shared.util.RequestState
 import org.jetbrains.compose.resources.painterResource
+import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import rememberMessageBarState
 
@@ -76,6 +78,17 @@ fun ManageProductScreen(
     val isFormValid = viewModel.isFormValid
     val thumbnailUploaderState = viewModel.thumbnailUploaderState
     var showCategoriesDialog by remember { mutableStateOf(false) }
+
+    val photoPicker = koinInject<PhotoPicker>()
+
+    photoPicker.InitializePhotoPicker { file ->
+        viewModel.uploadThumbnailToStorage(
+            file = file,
+            onSuccess = {
+                messageBarState.addSuccess("Image successfully uploaded!")
+            }
+        )
+    }
 
     AnimatedVisibility(
         visible = showCategoriesDialog
@@ -159,9 +172,7 @@ fun ManageProductScreen(
                             .clickable(
                                 enabled = thumbnailUploaderState is RequestState.Idle
                             ) {
-                                viewModel.updateThumbnailUploaderState(
-                                    RequestState.Idle
-                                )
+                                photoPicker.open()
                             },
                         contentAlignment = Alignment.Center
                     )
