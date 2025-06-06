@@ -15,7 +15,7 @@ data class ManageProductState(
     val title: String = "",
     val description: String = "",
     val thumbnail: String = "",
-    val category: String = ProductCategory.Protein.name,
+    val category: ProductCategory = ProductCategory.Protein,
     val flavors: List<String>? = null,
     val weight: Int? = null,
     val price: Double = 0.0
@@ -45,7 +45,7 @@ class ManageProductViewModel(
     }
 
     fun updateCategory(value: ProductCategory) {
-        screenState = screenState.copy(category = value.name)
+        screenState = screenState.copy(category = value)
     }
 
     fun updateFlavors(value: List<String>) {
