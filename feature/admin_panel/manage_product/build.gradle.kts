@@ -36,6 +36,8 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
 
+            implementation(libs.firebase.storage)
+
             implementation(libs.messagebar.kmp)
 
             implementation(libs.koin.compose)
@@ -48,8 +50,6 @@ kotlin {
             implementation(project(path = ":shared"))
             implementation(project(path = ":data"))
         }
-
-        
     }
 }
 
