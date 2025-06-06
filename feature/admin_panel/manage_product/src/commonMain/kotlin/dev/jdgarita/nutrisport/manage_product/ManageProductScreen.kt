@@ -204,7 +204,7 @@ fun ManageProductScreen(
                     onClick = {
                         viewModel.createNewProduct(
                             onSuccess = {
-                                messageBarState.addSuccess("Product created successfully")
+                                messageBarState.addSuccess("Product successfully added!")
                                 navigateBack()
                             },
                             onError = { message -> messageBarState.addError(message) }
