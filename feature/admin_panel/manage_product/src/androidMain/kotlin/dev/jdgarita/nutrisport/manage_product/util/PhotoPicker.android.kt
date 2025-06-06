@@ -8,23 +8,22 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import dev.gitlive.firebase.storage.File
 
 actual class PhotoPicker {
 
-    private var openPhotoPicker by mutableStateOf(false)
+    private var openPhotoPicker = mutableStateOf(false)
 
     @Composable
     actual fun InitializePhotoPicker(onImageSelect: (File?) -> Unit) {
-        val openPhotoPickerState = remember { openPhotoPicker }
+        val openPhotoPickerState by remember { openPhotoPicker }
         val pickMedia = rememberLauncherForActivityResult(
             contract = ActivityResultContracts.PickVisualMedia(),
         ) { uri ->
             uri?.let {
                 onImageSelect(File(uri))
             } ?: onImageSelect(null)
-            openPhotoPicker = false
+            openPhotoPicker.value = false
         }
 
         LaunchedEffect(openPhotoPickerState) {
@@ -39,6 +38,6 @@ actual class PhotoPicker {
     }
 
     actual fun open() {
-        openPhotoPicker = true
+        openPhotoPicker.value = true
     }
 }
