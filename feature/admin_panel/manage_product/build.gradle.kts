@@ -26,6 +26,16 @@ kotlin {
     }
 
     sourceSets {
+
+        androidMain.dependencies {
+            implementation(libs.androidx.activity.compose)
+            implementation(libs.ktor.android.client)
+        }
+
+        iosMain.dependencies {
+            implementation(libs.ktor.darwin.client)
+        }
+
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
