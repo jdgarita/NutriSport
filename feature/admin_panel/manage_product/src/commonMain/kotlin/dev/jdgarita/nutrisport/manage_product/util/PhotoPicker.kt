@@ -1,3 +1,12 @@
 package dev.jdgarita.nutrisport.manage_product.util
 
-expect class PhotoPicker
+import androidx.compose.runtime.Composable
+import dev.gitlive.firebase.storage.File
+
+expect class PhotoPicker {
+
+    @Composable
+    fun InitializePhotoPicker(onImageSelect: (File?) -> Unit)
+
+    fun open()
+}
