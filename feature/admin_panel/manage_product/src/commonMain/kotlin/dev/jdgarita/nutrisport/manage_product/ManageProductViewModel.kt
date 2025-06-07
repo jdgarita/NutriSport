@@ -135,7 +135,11 @@ class ManageProductViewModel(
         viewModelScope.launch {
             adminRepository.deleteImageFromStorage(
                 downloadUrl = screenState.thumbnail,
-                onSuccess = onSuccess,
+                onSuccess = {
+                    updateThumbnail("")
+                    updateThumbnailUploaderState(RequestState.Idle)
+                    onSuccess()
+                },
                 onError = onError
             )
         }
