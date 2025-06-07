@@ -219,7 +219,8 @@ fun ManageProductScreen(
                                 }
                             },
                             onSuccess = {
-                                Box(modifier = Modifier.fillMaxSize()) {
+                                Box(modifier = Modifier.fillMaxSize(),
+                                    contentAlignment = Alignment.TopEnd) {
                                     AsyncImage(
                                         modifier = Modifier.fillMaxSize(),
                                         model = ImageRequest.Builder(
