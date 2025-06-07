@@ -232,7 +232,16 @@ fun ManageProductScreen(
                                     Box(
                                         modifier = Modifier
                                             .clip(RoundedCornerShape(6.dp))
-                                            .clickable {  }
+                                            .clickable {
+                                                viewModel.deleteThumbnailFromStorage(
+                                                    onSuccess = {
+                                                        messageBarState.addSuccess("Thumbnail removed successfully!")
+                                                    },
+                                                    onError = { message ->
+                                                        messageBarState.addError(message)
+                                                    }
+                                                )
+                                            }
                                             .padding(top = 12.dp, end = 12.dp)
                                             .background(color = ButtonPrimary)
                                             .padding(all = 12.dp),
