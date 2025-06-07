@@ -43,6 +43,15 @@ kotlin {
             implementation(libs.coil3.compose.core)
             implementation(libs.coil3.network.ktor)
         }
+
+        androidMain.dependencies {
+            implementation(libs.androidx.activity.compose)
+            implementation(libs.ktor.android.client)
+        }
+
+        iosMain.dependencies {
+            implementation(libs.ktor.darwin.client)
+        }
     }
 }
 
