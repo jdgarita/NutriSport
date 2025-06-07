@@ -46,6 +46,7 @@ import coil3.request.crossfade
 import dev.jdgarita.nutrisport.manage_product.util.PhotoPicker
 import dev.jdgarita.nutrisport.shared.BebasNeueFont
 import dev.jdgarita.nutrisport.shared.BorderIdle
+import dev.jdgarita.nutrisport.shared.ButtonPrimary
 import dev.jdgarita.nutrisport.shared.FontSize
 import dev.jdgarita.nutrisport.shared.IconPrimary
 import dev.jdgarita.nutrisport.shared.Resources
@@ -218,15 +219,33 @@ fun ManageProductScreen(
                                 }
                             },
                             onSuccess = {
-                                AsyncImage(
-                                    modifier = Modifier.fillMaxSize(),
-                                    model = ImageRequest.Builder(
-                                        LocalPlatformContext.current
-                                    ).data(screenState.thumbnail)
-                                        .crossfade(enable = true).build(),
-                                    contentDescription = "Product thumbnail",
-                                    contentScale = ContentScale.Crop
-                                )
+                                Box(modifier = Modifier.fillMaxSize()) {
+                                    AsyncImage(
+                                        modifier = Modifier.fillMaxSize(),
+                                        model = ImageRequest.Builder(
+                                            LocalPlatformContext.current
+                                        ).data(screenState.thumbnail)
+                                            .crossfade(enable = true).build(),
+                                        contentDescription = "Product thumbnail",
+                                        contentScale = ContentScale.Crop
+                                    )
+                                    Box(
+                                        modifier = Modifier
+                                            .clip(RoundedCornerShape(6.dp))
+                                            .clickable {  }
+                                            .padding(top = 12.dp, end = 12.dp)
+                                            .background(color = ButtonPrimary)
+                                            .padding(all = 12.dp),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Icon(
+                                            modifier = Modifier
+                                                .size(24.dp),
+                                            painter = painterResource(Resources.Icon.Delete),
+                                            contentDescription = "Delete icon"
+                                        )
+                                    }
+                                }
                             },
                             transitionSpec = null,
                             backgroundColor = null
