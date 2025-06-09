@@ -57,7 +57,6 @@ fun ProductCard(
             .background(SurfaceLighter)
             .clickable { onClick(product.id) }
     ) {
-
         AsyncImage(
             modifier = Modifier
                 .width(120.dp)
@@ -74,7 +73,6 @@ fun ProductCard(
             contentDescription = "Product thumbnail",
             contentScale = ContentScale.Crop
         )
-
         Column(
             modifier = Modifier
                 .weight(1f)
