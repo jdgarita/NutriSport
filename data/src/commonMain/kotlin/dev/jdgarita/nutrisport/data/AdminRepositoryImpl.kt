@@ -116,7 +116,8 @@ class AdminRepositoryImpl : AdminRepository {
             val userId = getCurrentUserId()
             if (userId != null) {
                 val database = Firebase.firestore
-                val productDocument = database.collection(collectionPath = "product").document(id).get()
+                val productDocument =
+                    database.collection(collectionPath = "product").document(id).get()
                 if (productDocument.exists) {
                     val product = Product(
                         id = productDocument.id,
@@ -141,6 +142,61 @@ class AdminRepositoryImpl : AdminRepository {
             }
         } catch (e: Exception) {
             return RequestState.Error("Error while reading a selected product: ${e.message ?: "Unknown error"}")
+        }
+    }
+
+    override suspend fun updateImageThumbnail(
+        productId: String,
+        downloadUrl: String,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+        try {
+            val userId = getCurrentUserId()
+            if (userId != null) {
+                val database = Firebase.firestore
+                val productCollection =
+                    database.collection(collectionPath = "product")
+                val existingProduct = productCollection.document(productId).get()
+                if (existingProduct.exists) {
+                    productCollection.document(productId).update("thumbnail" to downloadUrl)
+                    onSuccess()
+                } else {
+                    onError("Selected product not found.")
+                }
+            } else {
+                onError("User is not available")
+            }
+
+        } catch (e: Exception) {
+            onError("Error while updating a thumbnail: ${e.message ?: "Unknown error"}")
+        }
+    }
+
+    override suspend fun updateProduct(
+        product: Product,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+        try {
+            val userId = getCurrentUserId()
+            if (userId != null) {
+                val database = Firebase.firestore
+                val productCollection = database.collection(collectionPath = "product")
+                val existingProduct = productCollection.document(product.id).get()
+
+                if (existingProduct.exists) {
+                    productCollection.document(product.id).update(product)
+                    onSuccess()
+                } else {
+                    onError("Selected product not found.")
+                }
+            } else {
+                onError("User is not available")
+            }
+
+        } catch (e: Exception) {
+            onError("Error while updating a product: ${e.message ?: "Unknown error"}")
         }
     }
 
