@@ -53,6 +53,7 @@ class ManageProductViewModel(
                 val selectedProduct = adminRepository.readProductById(id)
                 if (selectedProduct is RequestState.Success) {
                     val product = selectedProduct.getSuccessData()
+                    updateId(product.id)
                     updateTitle(product.title)
                     updateDescription(product.description)
                     updateThumbnail(product.thumbnail)
@@ -176,9 +177,24 @@ class ManageProductViewModel(
             adminRepository.deleteImageFromStorage(
                 downloadUrl = screenState.thumbnail,
                 onSuccess = {
-                    updateThumbnail("")
-                    updateThumbnailUploaderState(RequestState.Idle)
-                    onSuccess()
+                    productId.takeIf { it.isNotEmpty() }?.let { id ->
+                        viewModelScope.launch {
+                            adminRepository.updateImageThumbnail(
+                                productId = id,
+                                downloadUrl = "",
+                                onSuccess = {
+                                    updateThumbnail("")
+                                    updateThumbnailUploaderState(RequestState.Idle)
+                                    onSuccess()
+                                },
+                                onError = onError
+                            )
+                        }
+                    } ?: run {
+                        updateThumbnail("")
+                        updateThumbnailUploaderState(RequestState.Idle)
+                        onSuccess()
+                    }
                 },
                 onError = onError
             )
