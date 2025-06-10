@@ -1,5 +1,6 @@
 package dev.jdgarita.nutrisport.shared.component
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -37,6 +38,7 @@ import dev.jdgarita.nutrisport.shared.SurfaceLighter
 import dev.jdgarita.nutrisport.shared.TextPrimary
 import dev.jdgarita.nutrisport.shared.TextSecondary
 import dev.jdgarita.nutrisport.shared.domain.Product
+import dev.jdgarita.nutrisport.shared.domain.ProductCategory
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -84,7 +86,9 @@ fun ProductCard(
                 fontSize = FontSize.MEDIUM,
                 color = TextPrimary,
                 fontFamily = RobotoCondensedFont(),
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.Medium,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
             Spacer(modifier = Modifier.height(4.dp))
 
@@ -107,18 +111,26 @@ fun ProductCard(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Row {
-                    Icon(
-                        modifier = Modifier.size(14.dp),
-                        painter = painterResource(Resources.Icon.Weight),
-                        contentDescription = "Weight icon"
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = "${product.weight}g",
-                        fontSize = FontSize.EXTRA_SMALL,
-                        color = TextPrimary
-                    )
+                AnimatedContent(
+                    targetState = product.category,
+                ) { category ->
+                    if (ProductCategory.valueOf(category) == ProductCategory.Accessories) {
+                        Spacer(modifier = Modifier.weight(1f))
+                    } else {
+                        Row {
+                            Icon(
+                                modifier = Modifier.size(14.dp),
+                                painter = painterResource(Resources.Icon.Weight),
+                                contentDescription = "Weight icon"
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = "${product.weight}g",
+                                fontSize = FontSize.EXTRA_SMALL,
+                                color = TextPrimary
+                            )
+                        }
+                    }
                 }
                 Text(
                     text = "$${product.price}",
