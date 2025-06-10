@@ -198,7 +198,9 @@ class ManageProductViewModel(
                         description = screenState.description,
                         thumbnail = screenState.thumbnail,
                         category = screenState.category.name,
-                        flavors = screenState.flavors.split(","),
+                        flavors = screenState.flavors.split(",")
+                            .map { it.trim() }
+                            .filter { it.isNotEmpty() },
                         weight = screenState.weight,
                         price = screenState.price,
                     ),
@@ -209,6 +211,5 @@ class ManageProductViewModel(
         } else {
             onError("Please fill in the information.")
         }
-
     }
 }
