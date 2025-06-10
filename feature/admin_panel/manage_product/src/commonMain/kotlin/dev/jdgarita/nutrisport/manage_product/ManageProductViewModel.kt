@@ -12,12 +12,15 @@ import dev.jdgarita.nutrisport.shared.domain.Product
 import dev.jdgarita.nutrisport.shared.domain.ProductCategory
 import dev.jdgarita.nutrisport.shared.util.RequestState
 import kotlinx.coroutines.launch
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
-@OptIn(ExperimentalUuidApi::class)
+@OptIn(ExperimentalUuidApi::class, ExperimentalTime::class)
 data class ManageProductState(
     val id: String = Uuid.random().toHexString(),
+    val createdAt: Long = Clock.System.now().toEpochMilliseconds(),
     val title: String = "",
     val description: String = "",
     val thumbnail: String = "",
@@ -55,6 +58,7 @@ class ManageProductViewModel(
                     val product = selectedProduct.getSuccessData()
                     updateId(product.id)
                     updateTitle(product.title)
+                    updateCreatedAt(product.createdAt)
                     updateDescription(product.description)
                     updateThumbnail(product.thumbnail)
                     updateThumbnailUploaderState(RequestState.Success(Unit))
@@ -67,8 +71,12 @@ class ManageProductViewModel(
         }
     }
 
-    fun updateId(value: String) {
+    private fun updateId(value: String) {
         screenState = screenState.copy(id = value)
+    }
+
+    private fun updateCreatedAt(value: Long) {
+        screenState = screenState.copy(createdAt = value)
     }
 
     fun updateTitle(value: String) {
