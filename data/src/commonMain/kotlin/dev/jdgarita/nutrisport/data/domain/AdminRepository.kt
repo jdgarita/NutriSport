@@ -2,6 +2,8 @@ package dev.jdgarita.nutrisport.data.domain
 
 import dev.gitlive.firebase.storage.File
 import dev.jdgarita.nutrisport.shared.domain.Product
+import dev.jdgarita.nutrisport.shared.util.RequestState
+import kotlinx.coroutines.flow.Flow
 
 interface AdminRepository {
 
@@ -20,4 +22,6 @@ interface AdminRepository {
         onSuccess: () -> Unit,
         onError: (String) -> Unit
     )
+
+    fun readLastTenProducts(): Flow<RequestState<List<Product>>>
 }
