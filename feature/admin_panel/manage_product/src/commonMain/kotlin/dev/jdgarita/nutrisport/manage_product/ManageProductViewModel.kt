@@ -184,4 +184,31 @@ class ManageProductViewModel(
             )
         }
     }
+
+    fun updateProduct(
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+        if (isFormValid) {
+            viewModelScope.launch {
+                adminRepository.updateProduct(
+                    product = Product(
+                        id = screenState.id,
+                        title = screenState.title,
+                        description = screenState.description,
+                        thumbnail = screenState.thumbnail,
+                        category = screenState.category.name,
+                        flavors = screenState.flavors.split(","),
+                        weight = screenState.weight,
+                        price = screenState.price,
+                    ),
+                    onSuccess = onSuccess,
+                    onError = onError
+                )
+            }
+        } else {
+            onError("Please fill in the information.")
+        }
+
+    }
 }
