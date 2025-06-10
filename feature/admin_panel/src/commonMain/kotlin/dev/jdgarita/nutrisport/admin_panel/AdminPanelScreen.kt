@@ -129,8 +129,8 @@ fun AdminPanelScreen(
                         ProductCard(
                             modifier = Modifier,
                             product = product
-                        ) {
-
+                        ) { productId ->
+                            navigateToManageProduct(productId)
                         }
                     }
                 }
