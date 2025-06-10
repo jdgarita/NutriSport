@@ -65,6 +65,7 @@ class ManageProductViewModel(
             }
         }
     }
+
     fun updateId(value: String) {
         screenState = screenState.copy(id = value)
     }
@@ -101,7 +102,6 @@ class ManageProductViewModel(
         screenState = screenState.copy(price = value)
     }
 
-
     fun uploadThumbnailToStorage(
         file: File?,
         onSuccess: () -> Unit,
@@ -120,9 +120,25 @@ class ManageProductViewModel(
                 if (downloadUrl.isNullOrEmpty()) {
                     throw Exception("Failed to retrieve a download URL after the upload.")
                 }
-                onSuccess()
-                updateThumbnailUploaderState(RequestState.Success(Unit))
-                updateThumbnail(downloadUrl)
+
+                productId.takeIf { it.isNotEmpty() }?.let { id ->
+                    adminRepository.updateImageThumbnail(
+                        productId = id,
+                        downloadUrl = downloadUrl,
+                        onSuccess = {
+                            onSuccess()
+                            updateThumbnailUploaderState(RequestState.Success(Unit))
+                            updateThumbnail(downloadUrl)
+                        },
+                        onError = { errorMessage ->
+                            updateThumbnailUploaderState(RequestState.Error(errorMessage))
+                        }
+                    )
+                } ?: run {
+                    onSuccess()
+                    updateThumbnailUploaderState(RequestState.Success(Unit))
+                    updateThumbnail(downloadUrl)
+                }
             } catch (e: Exception) {
                 updateThumbnailUploaderState(RequestState.Error("Error while uploading: $e"))
             }
