@@ -7,6 +7,7 @@ import dev.jdgarita.nutrisport.data.domain.AdminRepository
 import dev.jdgarita.nutrisport.data.domain.CustomerRepository
 import dev.jdgarita.nutrisport.home.HomeGraphViewModel
 import dev.jdgarita.nutrisport.manage_product.ManageProductViewModel
+import dev.jdgarita.nutrisport.admin_panel.AdminPanelViewModel
 import dev.jdgarita.nutrisport.profile.ProfileViewModel
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
@@ -22,6 +23,7 @@ val sharedModule = module {
     viewModelOf(::ProfileViewModel)
     viewModelOf(::ProfileViewModel)
     viewModelOf(::ManageProductViewModel)
+    viewModelOf(::AdminPanelViewModel)
 }
 
 expect val targetModule: Module
