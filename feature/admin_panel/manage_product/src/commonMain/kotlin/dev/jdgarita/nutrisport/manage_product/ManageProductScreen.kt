@@ -60,6 +60,7 @@ import dev.jdgarita.nutrisport.shared.component.ErrorCard
 import dev.jdgarita.nutrisport.shared.component.LoadingCard
 import dev.jdgarita.nutrisport.shared.component.PrimaryButton
 import dev.jdgarita.nutrisport.shared.component.dialog.CategoriesDialog
+import dev.jdgarita.nutrisport.shared.domain.ProductCategory
 import dev.jdgarita.nutrisport.shared.util.DisplayResult
 import dev.jdgarita.nutrisport.shared.util.RequestState
 import org.jetbrains.compose.resources.painterResource
@@ -137,7 +138,6 @@ fun ManageProductScreen(
         }
     )
     { padding ->
-
         ContentWithMessageBar(
             modifier = Modifier.fillMaxSize().padding(
                 top = padding.calculateTopPadding(),
@@ -176,8 +176,7 @@ fun ManageProductScreen(
                                 photoPicker.open()
                             },
                         contentAlignment = Alignment.Center
-                    )
-                    {
+                    ) {
                         thumbnailUploaderState.DisplayResult(
                             onIdle = {
                                 Icon(
@@ -219,8 +218,10 @@ fun ManageProductScreen(
                                 }
                             },
                             onSuccess = {
-                                Box(modifier = Modifier.fillMaxSize(),
-                                    contentAlignment = Alignment.TopEnd) {
+                                Box(
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentAlignment = Alignment.TopEnd
+                                ) {
                                     AsyncImage(
                                         modifier = Modifier.fillMaxSize(),
                                         model = ImageRequest.Builder(
@@ -261,7 +262,6 @@ fun ManageProductScreen(
                             backgroundColor = null
 
                         )
-
                     }
                     CustomTextField(
                         value = screenState.title,
@@ -280,19 +280,27 @@ fun ManageProductScreen(
                         text = screenState.category.title,
                         onClick = { showCategoriesDialog = true }
                     )
-                    CustomTextField(
-                        value = "${screenState.weight ?: ""}",
-                        onValueChange = { viewModel.updateWeight(it.toIntOrNull() ?: 0) },
-                        placeholder = "Weight (Optional",
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Number
-                        )
-                    )
-                    CustomTextField(
-                        value = screenState.flavors,
-                        onValueChange = viewModel::updateFlavors,
-                        placeholder = "Flavors (Optional)",
-                    )
+                    AnimatedVisibility(
+                        visible = screenState.category != ProductCategory.Accessories
+                    ) {
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            CustomTextField(
+                                value = "${screenState.weight ?: ""}",
+                                onValueChange = { viewModel.updateWeight(it.toIntOrNull() ?: 0) },
+                                placeholder = "Weight",
+                                keyboardOptions = KeyboardOptions(
+                                    keyboardType = KeyboardType.Number
+                                )
+                            )
+                            CustomTextField(
+                                value = screenState.flavors,
+                                onValueChange = viewModel::updateFlavors,
+                                placeholder = "Flavors",
+                            )
+                        }
+                    }
                     CustomTextField(
                         value = screenState.price.toString(),
                         onValueChange = { value ->
