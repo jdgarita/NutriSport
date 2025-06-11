@@ -30,7 +30,11 @@ class AdminRepositoryImpl : AdminRepository {
                 val firestore = Firebase.firestore
                 val productCollection = firestore.collection(collectionPath = "product")
 
-                productCollection.document(product.id).set(product)
+                productCollection.document(product.id).set(
+                    product.apply {
+                        this.title.lowercase()
+                    }
+                )
                 onSuccess()
             } else {
                 onError("User is not available")
@@ -101,7 +105,7 @@ class AdminRepositoryImpl : AdminRepository {
                                 isNew = document.get(field = "isNew")
                             )
                         }
-                        send(RequestState.Success(data = products))
+                        send(RequestState.Success(data = products.map { it.copy(title = it.title.uppercase()) }))
                     }
             } else {
                 send(RequestState.Error("User is not available"))
@@ -133,7 +137,7 @@ class AdminRepositoryImpl : AdminRepository {
                         isDiscounted = productDocument.get(field = "isDiscounted"),
                         isNew = productDocument.get(field = "isNew")
                     )
-                    return RequestState.Success(data = product)
+                    return RequestState.Success(data = product.apply { this.title.uppercase() })
                 } else {
                     return RequestState.Error("Selected product not found.")
                 }
@@ -186,7 +190,11 @@ class AdminRepositoryImpl : AdminRepository {
                 val existingProduct = productCollection.document(product.id).get()
 
                 if (existingProduct.exists) {
-                    productCollection.document(product.id).update(product)
+                    productCollection.document(product.id).update(
+                        product.apply {
+                            this.title.lowercase()
+                        }
+                    )
                     onSuccess()
                 } else {
                     onError("Selected product not found.")
