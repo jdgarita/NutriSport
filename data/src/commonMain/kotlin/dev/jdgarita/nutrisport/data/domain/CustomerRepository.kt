@@ -17,7 +17,7 @@ interface CustomerRepository {
 
     suspend fun signOut(): RequestState<Unit>
 
-    fun readCustomerFlow(): Flow<RequestState<Customer?>>
+    fun readCustomerFlow(): Flow<RequestState<Customer>>
 
     suspend fun updateCustomer(
         customer: Customer,

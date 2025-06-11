@@ -39,6 +39,10 @@ class CustomerRepositoryImpl : CustomerRepository {
                 customerExists -> onSuccess()
                 else -> {
                     customerCollection.document(user.uid).set(customer)
+                    customerCollection.document(user.uid)
+                        .collection("privateData")
+                        .document("role")
+                        .set(mapOf("isAdmin" to false))
                     onSuccess()
                 }
             }
@@ -59,7 +63,7 @@ class CustomerRepositoryImpl : CustomerRepository {
         RequestState.Error("Error signing out: ${e.message ?: "Unknown error"}")
     }
 
-    override fun readCustomerFlow(): Flow<RequestState<Customer?>> = channelFlow {
+    override fun readCustomerFlow(): Flow<RequestState<Customer>> = channelFlow {
         try {
             val userId = getCurrentUserId()
             if (userId != null) {
@@ -69,6 +73,11 @@ class CustomerRepositoryImpl : CustomerRepository {
                     .snapshots
                     .collectLatest { document ->
                         if (document.exists) {
+                            val privateDataDocument = database.collection(collectionPath = "customer")
+                                .document(userId)
+                                .collection(collectionPath = "privateData")
+                                .document("role")
+                                .get()
                             val customer = Customer(
                                 id = document.id,
                                 firstName = document.get("firstName"),
@@ -79,7 +88,7 @@ class CustomerRepositoryImpl : CustomerRepository {
                                 address = document.get("address"),
                                 phoneNumber = document.get("phoneNumber"),
                                 cart = document.get("cart"),
-                                isAdmin = document.get("isAdmin")
+                                isAdmin = privateDataDocument.get("isAdmin")
                             )
                             send(RequestState.Success(customer))
                         } else {
