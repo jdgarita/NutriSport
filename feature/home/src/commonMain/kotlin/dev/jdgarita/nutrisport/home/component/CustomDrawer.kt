@@ -1,5 +1,6 @@
 package dev.jdgarita.nutrisport.home.component
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -16,9 +17,12 @@ import dev.jdgarita.nutrisport.shared.BebasNeueFont
 import dev.jdgarita.nutrisport.shared.FontSize
 import dev.jdgarita.nutrisport.shared.TextPrimary
 import dev.jdgarita.nutrisport.shared.TextSecondary
+import dev.jdgarita.nutrisport.shared.domain.Customer
+import dev.jdgarita.nutrisport.shared.util.RequestState
 
 @Composable
 fun CustomDrawer(
+    customer: RequestState<Customer>,
     onProfileClick: () -> Unit,
     onContactUsClick: () -> Unit,
     onSignOutClick: () -> Unit,
@@ -62,10 +66,17 @@ fun CustomDrawer(
             Spacer(modifier = Modifier.height(12.dp))
         }
         Spacer(modifier = Modifier.weight(1f))
-        DrawerItemCard(
-            drawerItem = DrawerItem.AdminPanel,
-            onClick = onAdminPanelClick
-        )
+        AnimatedContent(
+            targetState = customer
+        ) { customerState ->
+            if (customerState.isSuccess() && customerState.getSuccessData().isAdmin) {
+                DrawerItemCard(
+                    drawerItem = DrawerItem.AdminPanel,
+                    onClick = onAdminPanelClick
+                )
+            }
+        }
+
         Spacer(modifier = Modifier.height(24.dp))
     }
 }
