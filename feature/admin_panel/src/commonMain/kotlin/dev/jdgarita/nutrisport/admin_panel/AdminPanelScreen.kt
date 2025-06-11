@@ -82,7 +82,13 @@ fun AdminPanelScreen(
                                 trailingIcon = {
                                     IconButton(
                                         modifier = Modifier.size(14.dp),
-                                        onClick = { viewModel.updateSearchQuery("") }
+                                        onClick = {
+                                            if (searchQuery.isNotEmpty()) {
+                                                viewModel.updateSearchQuery("")
+                                            } else {
+                                                searchBarVisible = false
+                                            }
+                                        }
                                     ) {
                                         Icon(
                                             painter = painterResource(Resources.Icon.Close),
@@ -178,22 +184,34 @@ fun AdminPanelScreen(
                 )
             },
             onSuccess = { lastProducts ->
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(all = 12.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    items(
-                        items = lastProducts,
-                        key = { it.id }
-                    ) { product ->
-                        ProductCard(
-                            modifier = Modifier,
-                            product = product
-                        ) { productId ->
-                            navigateToManageProduct(productId)
+                AnimatedContent(
+                    targetState = lastProducts
+                ) { products ->
+                    if (products.isNotEmpty()) {
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(all = 12.dp),
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            items(
+                                items = lastProducts,
+                                key = { it.id }
+                            ) { product ->
+                                ProductCard(
+                                    modifier = Modifier,
+                                    product = product
+                                ) { productId ->
+                                    navigateToManageProduct(productId)
+                                }
+                            }
                         }
+                    } else {
+                        InfoCard(
+                            image = Resources.Image.Cat,
+                            title = "Oops!",
+                            subtitle = "Products not found."
+                        )
                     }
                 }
             },
