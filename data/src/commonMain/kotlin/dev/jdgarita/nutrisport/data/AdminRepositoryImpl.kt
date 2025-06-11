@@ -145,7 +145,7 @@ class AdminRepositoryImpl : AdminRepository {
         }
     }
 
-    override suspend fun updateImageThumbnail(
+    override suspend fun updateProductThumbnail(
         productId: String,
         downloadUrl: String,
         onSuccess: () -> Unit,
@@ -226,6 +226,48 @@ class AdminRepositoryImpl : AdminRepository {
             onError("Error while deleting a product: ${e.message ?: "Unknown error"}")
         }
     }
+
+    override fun searchProductsByTitle(searchQuery: String): Flow<RequestState<List<Product>>> =
+        channelFlow {
+            try {
+                val userId = getCurrentUserId()
+                if (userId != null) {
+                    val database = Firebase.firestore
+
+                    val queryText = searchQuery.trim().lowercase()
+                    val endText = queryText + "\uf8ff"
+
+                    database.collection(collectionPath = "product")
+                        .orderBy("title")
+                        .startAt(queryText)
+                        .endAt(endText)
+                        .snapshots
+                        .collectLatest { query ->
+                            val products = query.documents.map { productDocument ->
+                                Product(
+                                    id = productDocument.id,
+                                    title = productDocument.get(field = "title"),
+                                    createdAt = productDocument.get(field = "createdAt"),
+                                    description = productDocument.get(field = "description"),
+                                    thumbnail = productDocument.get(field = "thumbnail"),
+                                    category = productDocument.get(field = "category"),
+                                    flavors = productDocument.get(field = "flavors"),
+                                    weight = productDocument.get(field = "weight"),
+                                    price = productDocument.get(field = "price"),
+                                    isPopular = productDocument.get(field = "isPopular"),
+                                    isDiscounted = productDocument.get(field = "isDiscounted"),
+                                    isNew = productDocument.get(field = "isNew")
+                                )
+                            }
+                            send(RequestState.Success(products))
+                        }
+                } else {
+                    send(RequestState.Error("User is not available"))
+                }
+            } catch (e: Exception) {
+                send(RequestState.Error("Error while searching products: ${e.message}"))
+            }
+        }
 
     private fun extractFirebaseStoragePath(downloadUrl: String): String? {
         val startIndex = downloadUrl.indexOf("/o/") + 3

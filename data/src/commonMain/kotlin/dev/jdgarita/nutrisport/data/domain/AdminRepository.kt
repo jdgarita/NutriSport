@@ -27,7 +27,7 @@ interface AdminRepository {
 
     suspend fun readProductById(id: String): RequestState<Product>
 
-    suspend fun updateImageThumbnail(
+    suspend fun updateProductThumbnail(
         productId: String,
         downloadUrl: String,
         onSuccess: () -> Unit,
@@ -45,4 +45,8 @@ interface AdminRepository {
         onSuccess: () -> Unit,
         onError: (String) -> Unit
     )
+
+    fun searchProductsByTitle(
+        searchQuery: String
+    ): Flow<RequestState<List<Product>>>
 }
