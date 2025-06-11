@@ -31,9 +31,7 @@ class AdminRepositoryImpl : AdminRepository {
                 val productCollection = firestore.collection(collectionPath = "product")
 
                 productCollection.document(product.id).set(
-                    product.apply {
-                        this.title.lowercase()
-                    }
+                    product.copy(title = product.title.lowercase())
                 )
                 onSuccess()
             } else {
@@ -137,7 +135,7 @@ class AdminRepositoryImpl : AdminRepository {
                         isDiscounted = productDocument.get(field = "isDiscounted"),
                         isNew = productDocument.get(field = "isNew")
                     )
-                    return RequestState.Success(data = product.apply { this.title.uppercase() })
+                    return RequestState.Success(data = product.copy(product.title.uppercase()))
                 } else {
                     return RequestState.Error("Selected product not found.")
                 }
@@ -191,9 +189,7 @@ class AdminRepositoryImpl : AdminRepository {
 
                 if (existingProduct.exists) {
                     productCollection.document(product.id).update(
-                        product.apply {
-                            this.title.lowercase()
-                        }
+                        product.copy(product.title.lowercase())
                     )
                     onSuccess()
                 } else {
