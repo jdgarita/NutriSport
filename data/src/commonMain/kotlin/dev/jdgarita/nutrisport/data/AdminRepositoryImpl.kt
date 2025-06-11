@@ -238,13 +238,13 @@ class AdminRepositoryImpl : AdminRepository {
                 if (userId != null) {
                     val database = Firebase.firestore
 
-                    val queryText = searchQuery.trim().lowercase()
-                    val endText = queryText + "\uf8ff"
+//                    val queryText = searchQuery.trim().lowercase()
+//                    val endText = queryText + "\uf8ff"
 
                     database.collection(collectionPath = "product")
-                        .orderBy("title")
-                        .startAt(queryText)
-                        .endAt(endText)
+//                        .orderBy("title")
+//                        .startAt(queryText)
+//                        .endAt(endText)
                         .snapshots
                         .collectLatest { query ->
                             val products = query.documents.map { productDocument ->
@@ -263,7 +263,9 @@ class AdminRepositoryImpl : AdminRepository {
                                     isNew = productDocument.get(field = "isNew")
                                 )
                             }
-                            send(RequestState.Success(products))
+                            send(RequestState.Success(products.map { product ->
+                                product.copy(product.title.uppercase())
+                            }.filter { it.title.contains(searchQuery) }))
                         }
                 } else {
                     send(RequestState.Error("User is not available"))
