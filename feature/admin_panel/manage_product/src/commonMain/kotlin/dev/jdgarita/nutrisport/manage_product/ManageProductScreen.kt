@@ -19,6 +19,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -80,6 +82,7 @@ fun ManageProductScreen(
     val isFormValid = viewModel.isFormValid
     val thumbnailUploaderState = viewModel.thumbnailUploaderState
     var showCategoriesDialog by remember { mutableStateOf(false) }
+    var dropDownMenuOpened by remember { mutableStateOf(false) }
 
     val photoPicker = koinInject<PhotoPicker>()
 
@@ -125,6 +128,39 @@ fun ManageProductScreen(
                             contentDescription = "Back arrow icon",
                             tint = IconPrimary
                         )
+                    }
+                },
+                actions = {
+                    Box(modifier = Modifier) {
+                        IconButton(onClick = { dropDownMenuOpened = true }) {
+                            Icon(
+                                painter = painterResource(Resources.Icon.VerticalMenu),
+                                contentDescription = "Vertical Menu Icon",
+                                tint = IconPrimary
+                            )
+                        }
+                        DropdownMenu(
+                            containerColor = Surface,
+                            expanded = dropDownMenuOpened,
+                            onDismissRequest = {
+                                dropDownMenuOpened = false
+                            }
+                        ) {
+                            DropdownMenuItem(
+                                leadingIcon = {},
+                                onClick = {
+                                    viewModel.deleteProduct(
+                                        onSuccess = {
+                                            messageBarState.addSuccess("Product deleted successfully")
+                                        },
+                                        onError = { errorMessage ->
+                                            messageBarState.addError(errorMessage)
+                                        }
+                                    )
+                                },
+                                text = { Text(text = "Delete", color = TextPrimary) }
+                            )
+                        }
                     }
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
