@@ -263,9 +263,15 @@ class AdminRepositoryImpl : AdminRepository {
                                     isNew = productDocument.get(field = "isNew")
                                 )
                             }
-                            send(RequestState.Success(products.map { product ->
-                                product.copy(product.title.uppercase())
-                            }.filter { it.title.contains(searchQuery) }))
+                            send(
+                                RequestState.Success(
+                                    products
+                                        .filter { it.title.contains(searchQuery) }
+                                        .map { product ->
+                                            product.copy(product.title.uppercase())
+                                        }
+                                )
+                            )
                         }
                 } else {
                     send(RequestState.Error("User is not available"))
