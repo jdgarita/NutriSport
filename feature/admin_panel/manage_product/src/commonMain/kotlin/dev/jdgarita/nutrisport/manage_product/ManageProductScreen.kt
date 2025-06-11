@@ -131,43 +131,45 @@ fun ManageProductScreen(
                     }
                 },
                 actions = {
-                    Box(modifier = Modifier) {
-                        IconButton(onClick = { dropDownMenuOpened = true }) {
-                            Icon(
-                                painter = painterResource(Resources.Icon.VerticalMenu),
-                                contentDescription = "Vertical Menu Icon",
-                                tint = IconPrimary
-                            )
-                        }
-                        DropdownMenu(
-                            containerColor = Surface,
-                            expanded = dropDownMenuOpened,
-                            onDismissRequest = {
-                                dropDownMenuOpened = false
-                            }
-                        ) {
-                            DropdownMenuItem(
-                                leadingIcon = {
-                                    Icon(
-                                        modifier = Modifier.size(14.dp),
-                                        painter = painterResource(Resources.Icon.Delete),
-                                        contentDescription = "Delete Icon",
-                                        tint = IconPrimary
-                                    )
-                                },
-                                onClick = {
-                                    dropDownMenuOpened = false
-                                    viewModel.deleteProduct(
-                                        onSuccess = navigateBack,
-                                        onError = { errorMessage ->
-                                            messageBarState.addError(errorMessage)
-                                        }
-                                    )
-                                },
-                                text = { Text(text = "Delete", color = TextPrimary) }
-                            )
-                        }
-                    }
+                   id.takeIf { it != null }?.let {
+                       Box(modifier = Modifier) {
+                           IconButton(onClick = { dropDownMenuOpened = true }) {
+                               Icon(
+                                   painter = painterResource(Resources.Icon.VerticalMenu),
+                                   contentDescription = "Vertical Menu Icon",
+                                   tint = IconPrimary
+                               )
+                           }
+                           DropdownMenu(
+                               containerColor = Surface,
+                               expanded = dropDownMenuOpened,
+                               onDismissRequest = {
+                                   dropDownMenuOpened = false
+                               }
+                           ) {
+                               DropdownMenuItem(
+                                   leadingIcon = {
+                                       Icon(
+                                           modifier = Modifier.size(14.dp),
+                                           painter = painterResource(Resources.Icon.Delete),
+                                           contentDescription = "Delete Icon",
+                                           tint = IconPrimary
+                                       )
+                                   },
+                                   onClick = {
+                                       dropDownMenuOpened = false
+                                       viewModel.deleteProduct(
+                                           onSuccess = navigateBack,
+                                           onError = { errorMessage ->
+                                               messageBarState.addError(errorMessage)
+                                           }
+                                       )
+                                   },
+                                   text = { Text(text = "Delete", color = TextPrimary) }
+                               )
+                           }
+                       }
+                   }
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = Surface,
