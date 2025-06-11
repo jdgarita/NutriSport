@@ -147,12 +147,18 @@ fun ManageProductScreen(
                             }
                         ) {
                             DropdownMenuItem(
-                                leadingIcon = {},
+                                leadingIcon = {
+                                    Icon(
+                                        modifier = Modifier.size(14.dp),
+                                        painter = painterResource(Resources.Icon.Delete),
+                                        contentDescription = "Delete Icon",
+                                        tint = IconPrimary
+                                    )
+                                },
                                 onClick = {
+                                    dropDownMenuOpened = false
                                     viewModel.deleteProduct(
-                                        onSuccess = {
-                                            messageBarState.addSuccess("Product deleted successfully")
-                                        },
+                                        onSuccess = navigateBack,
                                         onError = { errorMessage ->
                                             messageBarState.addError(errorMessage)
                                         }
