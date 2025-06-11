@@ -8,6 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,6 +26,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -53,7 +56,9 @@ import dev.jdgarita.nutrisport.shared.FontSize
 import dev.jdgarita.nutrisport.shared.IconPrimary
 import dev.jdgarita.nutrisport.shared.Resources
 import dev.jdgarita.nutrisport.shared.Surface
+import dev.jdgarita.nutrisport.shared.SurfaceDarker
 import dev.jdgarita.nutrisport.shared.SurfaceLighter
+import dev.jdgarita.nutrisport.shared.SurfaceSecondary
 import dev.jdgarita.nutrisport.shared.TextPrimary
 import dev.jdgarita.nutrisport.shared.TextSecondary
 import dev.jdgarita.nutrisport.shared.component.AlertTextField
@@ -131,45 +136,45 @@ fun ManageProductScreen(
                     }
                 },
                 actions = {
-                   id.takeIf { it != null }?.let {
-                       Box(modifier = Modifier) {
-                           IconButton(onClick = { dropDownMenuOpened = true }) {
-                               Icon(
-                                   painter = painterResource(Resources.Icon.VerticalMenu),
-                                   contentDescription = "Vertical Menu Icon",
-                                   tint = IconPrimary
-                               )
-                           }
-                           DropdownMenu(
-                               containerColor = Surface,
-                               expanded = dropDownMenuOpened,
-                               onDismissRequest = {
-                                   dropDownMenuOpened = false
-                               }
-                           ) {
-                               DropdownMenuItem(
-                                   leadingIcon = {
-                                       Icon(
-                                           modifier = Modifier.size(14.dp),
-                                           painter = painterResource(Resources.Icon.Delete),
-                                           contentDescription = "Delete Icon",
-                                           tint = IconPrimary
-                                       )
-                                   },
-                                   onClick = {
-                                       dropDownMenuOpened = false
-                                       viewModel.deleteProduct(
-                                           onSuccess = navigateBack,
-                                           onError = { errorMessage ->
-                                               messageBarState.addError(errorMessage)
-                                           }
-                                       )
-                                   },
-                                   text = { Text(text = "Delete", color = TextPrimary) }
-                               )
-                           }
-                       }
-                   }
+                    id.takeIf { it != null }?.let {
+                        Box(modifier = Modifier) {
+                            IconButton(onClick = { dropDownMenuOpened = true }) {
+                                Icon(
+                                    painter = painterResource(Resources.Icon.VerticalMenu),
+                                    contentDescription = "Vertical Menu Icon",
+                                    tint = IconPrimary
+                                )
+                            }
+                            DropdownMenu(
+                                containerColor = Surface,
+                                expanded = dropDownMenuOpened,
+                                onDismissRequest = {
+                                    dropDownMenuOpened = false
+                                }
+                            ) {
+                                DropdownMenuItem(
+                                    leadingIcon = {
+                                        Icon(
+                                            modifier = Modifier.size(14.dp),
+                                            painter = painterResource(Resources.Icon.Delete),
+                                            contentDescription = "Delete Icon",
+                                            tint = IconPrimary
+                                        )
+                                    },
+                                    onClick = {
+                                        dropDownMenuOpened = false
+                                        viewModel.deleteProduct(
+                                            onSuccess = navigateBack,
+                                            onError = { errorMessage ->
+                                                messageBarState.addError(errorMessage)
+                                            }
+                                        )
+                                    },
+                                    text = { Text(text = "Delete", color = TextPrimary) }
+                                )
+                            }
+                        }
+                    }
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = Surface,
@@ -358,6 +363,85 @@ fun ManageProductScreen(
                         )
                     )
 
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(24.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                modifier = Modifier.padding(start = 12.dp),
+                                text = "New",
+                                fontSize = FontSize.REGULAR,
+                                color = TextPrimary
+                            )
+                            Switch(
+                                checked = screenState.isNew,
+                                onCheckedChange = viewModel::updateNew,
+                                colors = SwitchDefaults.colors(
+                                    checkedTrackColor = SurfaceSecondary,
+                                    uncheckedTrackColor = SurfaceDarker,
+                                    checkedThumbColor = Surface,
+                                    uncheckedThumbColor = Surface,
+                                    checkedBorderColor = SurfaceSecondary,
+                                    uncheckedBorderColor = SurfaceDarker
+                                )
+                            )
+                        }
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                modifier = Modifier.padding(start = 12.dp),
+                                text = "Popular",
+                                fontSize = FontSize.REGULAR,
+                                color = TextPrimary
+                            )
+                            Switch(
+                                checked = screenState.isPopular,
+                                onCheckedChange = viewModel::updatePopular,
+                                colors = SwitchDefaults.colors(
+                                    checkedTrackColor = SurfaceSecondary,
+                                    uncheckedTrackColor = SurfaceDarker,
+                                    checkedThumbColor = Surface,
+                                    uncheckedThumbColor = Surface,
+                                    checkedBorderColor = SurfaceSecondary,
+                                    uncheckedBorderColor = SurfaceDarker
+                                )
+                            )
+                        }
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                modifier = Modifier.padding(start = 12.dp),
+                                text = "Discounted",
+                                fontSize = FontSize.REGULAR,
+                                color = TextPrimary
+                            )
+                            Switch(
+                                checked = screenState.isDiscounted,
+                                onCheckedChange = viewModel::updateDiscounted,
+                                colors = SwitchDefaults.colors(
+                                    checkedTrackColor = SurfaceSecondary,
+                                    uncheckedTrackColor = SurfaceDarker,
+                                    checkedThumbColor = Surface,
+                                    uncheckedThumbColor = Surface,
+                                    checkedBorderColor = SurfaceSecondary,
+                                    uncheckedBorderColor = SurfaceDarker
+                                )
+                            )
+                        }
+                    }
                     Spacer(modifier = Modifier.height(24.dp))
                 }
 
