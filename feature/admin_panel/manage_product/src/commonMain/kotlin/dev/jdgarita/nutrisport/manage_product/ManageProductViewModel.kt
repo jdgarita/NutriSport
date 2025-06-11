@@ -27,7 +27,10 @@ data class ManageProductState(
     val category: ProductCategory = ProductCategory.Protein,
     val flavors: String = "",
     val weight: Int? = null,
-    val price: Double = 0.0
+    val price: Double = 0.0,
+    val isNew: Boolean = false,
+    val isPopular: Boolean = false,
+    val isDiscounted: Boolean = false
 )
 
 class ManageProductViewModel(
@@ -77,6 +80,18 @@ class ManageProductViewModel(
 
     private fun updateCreatedAt(value: Long) {
         screenState = screenState.copy(createdAt = value)
+    }
+
+    fun updateNew(value: Boolean) {
+        screenState = screenState.copy(isNew = value)
+    }
+
+    fun updatePopular(value: Boolean) {
+        screenState = screenState.copy(isPopular = value)
+    }
+
+    fun updateDiscounted(value: Boolean) {
+        screenState = screenState.copy(isDiscounted = value)
     }
 
     fun updateTitle(value: String) {
@@ -169,6 +184,9 @@ class ManageProductViewModel(
                     flavors = screenState.flavors.split(","),
                     weight = screenState.weight,
                     price = screenState.price,
+                    isNew = screenState.isNew,
+                    isPopular = screenState.isPopular,
+                    isDiscounted = screenState.isDiscounted
                 ),
                 onSuccess = onSuccess,
                 onError = onError
@@ -228,6 +246,9 @@ class ManageProductViewModel(
                             .filter { it.isNotEmpty() },
                         weight = screenState.weight,
                         price = screenState.price,
+                        isNew = screenState.isNew,
+                        isPopular = screenState.isPopular,
+                        isDiscounted = screenState.isDiscounted
                     ),
                     onSuccess = onSuccess,
                     onError = onError
