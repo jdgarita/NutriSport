@@ -70,7 +70,7 @@ fun ProductsOverviewScreen() {
                             verticalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
                             items(
-                                items = products,
+                                items = products.sortedBy { it.createdAt }.take(3),
                                 key = { it.id }
                             ) { product ->
                                 ProductCard(
