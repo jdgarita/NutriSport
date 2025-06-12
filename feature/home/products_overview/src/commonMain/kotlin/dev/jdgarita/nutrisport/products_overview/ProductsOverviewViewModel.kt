@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.stateIn
 class ProductsOverviewViewModel(
     private val productRepository: ProductRepository
 ) : ViewModel() {
-    val products = productRepository.readNewAndDiscountedProducts()
+    val products = productRepository.readDiscountedProducts()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),

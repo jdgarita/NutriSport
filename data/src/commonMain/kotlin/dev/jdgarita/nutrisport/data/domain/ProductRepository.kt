@@ -8,5 +8,6 @@ interface ProductRepository {
 
     fun getCurrentUserId(): String?
 
-    fun readNewAndDiscountedProducts(): Flow<RequestState<List<Product>>>
+    fun readDiscountedProducts(): Flow<RequestState<List<Product>>>
+    fun readNewProducts(): Flow<RequestState<List<Product>>>
 }

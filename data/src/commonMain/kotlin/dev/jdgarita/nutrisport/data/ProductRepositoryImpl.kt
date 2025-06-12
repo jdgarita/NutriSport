@@ -14,7 +14,7 @@ class ProductRepositoryImpl : ProductRepository {
 
     override fun getCurrentUserId(): String? = Firebase.auth.currentUser?.uid
 
-    override fun readNewAndDiscountedProducts(): Flow<RequestState<List<Product>>> = channelFlow {
+    override fun readDiscountedProducts(): Flow<RequestState<List<Product>>> = channelFlow {
         try {
             val userId = getCurrentUserId()
             if (userId != null) {
@@ -55,5 +55,9 @@ class ProductRepositoryImpl : ProductRepository {
         } catch (e: Exception) {
             send(RequestState.Error("Error while searching products: ${e.message}"))
         }
+    }
+
+    override fun readNewProducts(): Flow<RequestState<List<Product>>> {
+        TODO("Not yet implemented")
     }
 }
