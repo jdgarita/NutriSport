@@ -21,7 +21,6 @@ class ProductRepositoryImpl : ProductRepository {
                 val database = Firebase.firestore
 
                 database.collection(collectionPath = "product")
-                    .where { "isNew" equalTo true }
                     .where { "isDiscounted" equalTo true }
                     .snapshots
                     .collectLatest { query ->
