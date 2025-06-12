@@ -33,6 +33,7 @@ include(":feature:admin_panel")
 include(":feature:admin_panel:manage_product")
 include(":feature:admin_panel:manage_product")
 include(":feature:home")
+include(":feature:home:products_overview")
 
 include(":feature:navigation")
 include(":feature:profile")
