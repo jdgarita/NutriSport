@@ -43,7 +43,7 @@ class ProductRepositoryImpl : ProductRepository {
                         send(
                             RequestState.Success(
                                 products.map { product ->
-                                    product.copy(product.title.uppercase())
+                                    product.copy(title = product.title.uppercase())
                                 }
                             )
                         )
