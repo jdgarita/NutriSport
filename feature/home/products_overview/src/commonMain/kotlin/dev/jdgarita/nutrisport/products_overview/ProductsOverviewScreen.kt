@@ -15,8 +15,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import dev.jdgarita.nutrisport.shared.Alpha
 import dev.jdgarita.nutrisport.shared.FontSize
 import dev.jdgarita.nutrisport.shared.Resources
 import dev.jdgarita.nutrisport.shared.TextPrimary
@@ -53,6 +55,7 @@ fun ProductsOverviewScreen() {
                         Spacer(modifier = Modifier.height(24.dp))
                         Text(
                             modifier = Modifier
+                                .alpha(Alpha.HALF)
                                 .fillMaxWidth(),
                             textAlign = TextAlign.Center,
                             text = "Discounted Products",
