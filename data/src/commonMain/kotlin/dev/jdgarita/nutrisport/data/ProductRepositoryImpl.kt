@@ -20,13 +20,9 @@ class ProductRepositoryImpl : ProductRepository {
             if (userId != null) {
                 val database = Firebase.firestore
 
-//                    val queryText = searchQuery.trim().lowercase()
-//                    val endText = queryText + "\uf8ff"
-
                 database.collection(collectionPath = "product")
-//                        .orderBy("title")
-//                        .startAt(queryText)
-//                        .endAt(endText)
+                    .where { "isNew" equalTo true }
+                    .where { "isDiscounted" equalTo true }
                     .snapshots
                     .collectLatest { query ->
                         val products = query.documents.map { productDocument ->
@@ -47,11 +43,9 @@ class ProductRepositoryImpl : ProductRepository {
                         }
                         send(
                             RequestState.Success(
-                                products
-                                    .filter { it.title.contains(searchQuery) }
-                                    .map { product ->
-                                        product.copy(product.title.uppercase())
-                                    }
+                                products.map { product ->
+                                    product.copy(product.title.uppercase())
+                                }
                             )
                         )
                     }
