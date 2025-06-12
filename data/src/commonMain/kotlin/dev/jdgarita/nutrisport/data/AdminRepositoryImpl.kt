@@ -135,7 +135,7 @@ class AdminRepositoryImpl : AdminRepository {
                         isDiscounted = productDocument.get(field = "isDiscounted"),
                         isNew = productDocument.get(field = "isNew")
                     )
-                    return RequestState.Success(data = product.copy(product.title.uppercase()))
+                    return RequestState.Success(data = product.copy(title = product.title.uppercase()))
                 } else {
                     return RequestState.Error("Selected product not found.")
                 }
@@ -189,7 +189,7 @@ class AdminRepositoryImpl : AdminRepository {
 
                 if (existingProduct.exists) {
                     productCollection.document(product.id).update(
-                        product.copy(product.title.lowercase())
+                        product.copy(title = product.title.lowercase())
                     )
                     onSuccess()
                 } else {
@@ -268,7 +268,7 @@ class AdminRepositoryImpl : AdminRepository {
                                     products
                                         .filter { it.title.contains(searchQuery) }
                                         .map { product ->
-                                            product.copy(product.title.uppercase())
+                                            product.copy(title = product.title.uppercase())
                                         }
                                 )
                             )
