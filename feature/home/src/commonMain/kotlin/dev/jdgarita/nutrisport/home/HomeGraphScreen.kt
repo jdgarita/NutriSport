@@ -46,6 +46,7 @@ import dev.jdgarita.nutrisport.home.domain.BottomBarDestination
 import dev.jdgarita.nutrisport.home.domain.CustomDrawerState
 import dev.jdgarita.nutrisport.home.domain.isOpened
 import dev.jdgarita.nutrisport.home.domain.opposite
+import dev.jdgarita.nutrisport.products_overview.ProductsOverviewScreen
 import dev.jdgarita.nutrisport.shared.Alpha
 import dev.jdgarita.nutrisport.shared.BebasNeueFont
 import dev.jdgarita.nutrisport.shared.FontSize
@@ -211,7 +212,9 @@ fun HomeGraphScreen(
                             navController = navigationController,
                             startDestination = Screen.ProductOverview
                         ) {
-                            composable<Screen.ProductOverview> {}
+                            composable<Screen.ProductOverview> {
+                                ProductsOverviewScreen()
+                            }
                             composable<Screen.Cart> {}
                             composable<Screen.Categories> {}
                         }
