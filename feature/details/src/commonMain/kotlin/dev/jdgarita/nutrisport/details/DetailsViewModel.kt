@@ -1,5 +1,6 @@
 package dev.jdgarita.nutrisport.details
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -20,4 +21,11 @@ class DetailsViewModel(
                 started = SharingStarted.WhileSubscribed(),
                 initialValue = RequestState.Loading
             )
+
+    var quantity = mutableStateOf(1)
+        private set
+
+    fun updateQuantity(newValue: Int) {
+        quantity.value = newValue
+    }
 }
