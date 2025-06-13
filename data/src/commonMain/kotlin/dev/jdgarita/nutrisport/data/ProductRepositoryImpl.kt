@@ -56,7 +56,45 @@ class ProductRepositoryImpl : ProductRepository {
         }
     }
 
-    override fun readNewProducts(): Flow<RequestState<List<Product>>> {
-        TODO("Not yet implemented")
+    override fun readNewProducts(): Flow<RequestState<List<Product>>> = channelFlow {
+        try {
+            val userId = getCurrentUserId()
+            if (userId != null) {
+                val database = Firebase.firestore
+
+                database.collection(collectionPath = "product")
+                    .where { "isNew" equalTo true }
+                    .snapshots
+                    .collectLatest { query ->
+                        val products = query.documents.map { productDocument ->
+                            Product(
+                                id = productDocument.id,
+                                title = productDocument.get(field = "title"),
+                                createdAt = productDocument.get(field = "createdAt"),
+                                description = productDocument.get(field = "description"),
+                                thumbnail = productDocument.get(field = "thumbnail"),
+                                category = productDocument.get(field = "category"),
+                                flavors = productDocument.get(field = "flavors"),
+                                weight = productDocument.get(field = "weight"),
+                                price = productDocument.get(field = "price"),
+                                isPopular = productDocument.get(field = "isPopular"),
+                                isDiscounted = productDocument.get(field = "isDiscounted"),
+                                isNew = productDocument.get(field = "isNew")
+                            )
+                        }
+                        send(
+                            RequestState.Success(
+                                products.map { product ->
+                                    product.copy(title = product.title.uppercase())
+                                }
+                            )
+                        )
+                    }
+            } else {
+                send(RequestState.Error("User is not available"))
+            }
+        } catch (e: Exception) {
+            send(RequestState.Error("Error while searching products: ${e.message}"))
+        }
     }
 }
