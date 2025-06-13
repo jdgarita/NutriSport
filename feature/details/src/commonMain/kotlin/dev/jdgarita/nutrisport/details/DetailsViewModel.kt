@@ -42,7 +42,7 @@ class DetailsViewModel(
         selectedFlavor = newValue
     }
 
-    fun addItemToCard(
+    fun addItemToCart(
         onSuccess: () -> Unit,
         onError: (String) -> Unit
     ) {

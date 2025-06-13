@@ -261,10 +261,10 @@ fun DetailsScreen(
                                 enabled = if (selectedProduct.flavors?.isNotEmpty() == true) selectedFlavor != null
                                 else true,
                                 onClick = {
-//                                    viewModel.addItemToCart(
-//                                        onSuccess = { messageBarState.addSuccess("Product added to cart.") },
-//                                        onError = { message -> messageBarState.addError(message) }
-//                                    )
+                                    viewModel.addItemToCart(
+                                        onSuccess = { messageBarState.addSuccess("Product added to cart.") },
+                                        onError = { message -> messageBarState.addError(message) }
+                                    )
                                 }
                             )
                         }
