@@ -70,7 +70,8 @@ fun DetailsScreen(
     val messageBarState = rememberMessageBarState()
 
     val product by viewModel.product.collectAsState()
-    val quantity by viewModel.quantity
+    val quantity = viewModel.quantity
+    val selectedFlavor = viewModel.selectedFlavor
 
     Scaffold(
         containerColor = Surface,
@@ -246,10 +247,9 @@ fun DetailsScreen(
                                     selectedProduct.flavors?.forEach { flavor ->
                                         FlavorChip(
                                             flavor = flavor,
-                                            isSelected = true
-                                        ) {
-
-                                        }
+                                            isSelected = selectedFlavor == flavor,
+                                            onClick = { viewModel.updateSelectedFlavor(flavor) }
+                                        )
                                         Spacer(modifier = Modifier.width(8.dp))
                                     }
                                 }
@@ -257,10 +257,16 @@ fun DetailsScreen(
                             Spacer(modifier = Modifier.height(24.dp))
                             PrimaryButton(
                                 icon = Resources.Icon.ShoppingCart,
-                                text = "Add to cart"
-                            ) {
-
-                            }
+                                text = "Add to Cart",
+                                enabled = if (selectedProduct.flavors?.isNotEmpty() == true) selectedFlavor != null
+                                else true,
+                                onClick = {
+//                                    viewModel.addItemToCart(
+//                                        onSuccess = { messageBarState.addSuccess("Product added to cart.") },
+//                                        onError = { message -> messageBarState.addError(message) }
+//                                    )
+                                }
+                            )
                         }
                     }
                 }
