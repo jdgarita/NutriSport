@@ -1,5 +1,6 @@
 package dev.jdgarita.nutrisport.products_overview.component
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -9,11 +10,22 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
@@ -21,13 +33,23 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import dev.jdgarita.nutrisport.shared.Alpha
+import dev.jdgarita.nutrisport.shared.FontSize
+import dev.jdgarita.nutrisport.shared.Resources
+import dev.jdgarita.nutrisport.shared.RobotoCondensedFont
+import dev.jdgarita.nutrisport.shared.TextBrand
+import dev.jdgarita.nutrisport.shared.TextPrimary
+import dev.jdgarita.nutrisport.shared.TextWhite
 import dev.jdgarita.nutrisport.shared.domain.Product
+import dev.jdgarita.nutrisport.shared.domain.ProductCategory
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun MainProductCard(
@@ -95,5 +117,69 @@ fun MainProductCard(
                     )
                 )
         )
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(all = 12.dp),
+            verticalArrangement = Arrangement.Bottom
+        ) {
+            Text(
+                text = product.title,
+                fontSize = FontSize.EXTRA_MEDIUM,
+                fontWeight = FontWeight.Medium,
+                color = TextWhite,
+                fontFamily = RobotoCondensedFont(),
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text(
+                text = product.description,
+                fontSize = FontSize.REGULAR,
+                color = TextWhite.copy(alpha = Alpha.HALF),
+                maxLines = 3,
+                overflow = TextOverflow.Ellipsis
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                AnimatedContent(
+                    targetState = product.category,
+                ) { category ->
+                    if (ProductCategory.valueOf(category) == ProductCategory.Accessories) {
+                        Spacer(modifier = Modifier.weight(1f))
+                    } else {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                modifier = Modifier.size(14.dp),
+                                painter = painterResource(Resources.Icon.Weight),
+                                contentDescription = "Weight icon"
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = "${product.weight}g",
+                                fontSize = FontSize.EXTRA_SMALL,
+                                color = TextPrimary
+                            )
+                        }
+                    }
+                }
+                Text(
+                    text = "$${product.price}",
+                    fontSize = FontSize.EXTRA_REGULAR,
+                    color = TextBrand,
+                    fontWeight = FontWeight.Medium
+                )
+            }
+        }
     }
 }
