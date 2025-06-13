@@ -5,6 +5,7 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -36,6 +37,7 @@ import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import dev.jdgarita.nutrisport.details.component.FlavorChip
 import dev.jdgarita.nutrisport.shared.BebasNeueFont
 import dev.jdgarita.nutrisport.shared.BorderIdle
 import dev.jdgarita.nutrisport.shared.FontSize
@@ -205,6 +207,24 @@ fun DetailsScreen(
                         Column(
                             modifier = Modifier.padding(all = 24.dp)
                         ) {
+                            if (selectedProduct.flavors?.isNotEmpty() == true) {
+                                Spacer(modifier = Modifier.height(24.dp))
+                                FlowRow(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                                    horizontalArrangement = Arrangement.Center
+                                ) {
+                                    selectedProduct.flavors?.forEach { flavor ->
+                                        FlavorChip(
+                                            flavor = flavor,
+                                            isSelected = false
+                                        ) {
+
+                                        }
+                                    }
+                                }
+                            }
+                            Spacer(modifier = Modifier.height(12.dp))
                             PrimaryButton(
                                 icon = Resources.Icon.ShoppingCart,
                                 text = "Add to cart"
