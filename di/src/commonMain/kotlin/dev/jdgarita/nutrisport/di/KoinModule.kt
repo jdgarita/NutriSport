@@ -8,6 +8,7 @@ import dev.jdgarita.nutrisport.data.ProductRepositoryImpl
 import dev.jdgarita.nutrisport.data.domain.AdminRepository
 import dev.jdgarita.nutrisport.data.domain.CustomerRepository
 import dev.jdgarita.nutrisport.data.domain.ProductRepository
+import dev.jdgarita.nutrisport.details.DetailsViewModel
 import dev.jdgarita.nutrisport.home.HomeGraphViewModel
 import dev.jdgarita.nutrisport.manage_product.ManageProductViewModel
 import dev.jdgarita.nutrisport.products_overview.ProductsOverviewViewModel
@@ -29,6 +30,8 @@ val sharedModule = module {
     viewModelOf(::ManageProductViewModel)
     viewModelOf(::AdminPanelViewModel)
     viewModelOf(::ProductsOverviewViewModel)
+    viewModelOf(::ProductsOverviewViewModel)
+    viewModelOf(::DetailsViewModel)
 }
 
 expect val targetModule: Module
