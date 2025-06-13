@@ -5,6 +5,7 @@ import dev.gitlive.firebase.auth.FirebaseUser
 import dev.gitlive.firebase.auth.auth
 import dev.gitlive.firebase.firestore.firestore
 import dev.jdgarita.nutrisport.data.domain.CustomerRepository
+import dev.jdgarita.nutrisport.shared.domain.CartItem
 import dev.jdgarita.nutrisport.shared.domain.Customer
 import dev.jdgarita.nutrisport.shared.util.RequestState
 import kotlinx.coroutines.flow.Flow
@@ -73,11 +74,12 @@ class CustomerRepositoryImpl : CustomerRepository {
                     .snapshots
                     .collectLatest { document ->
                         if (document.exists) {
-                            val privateDataDocument = database.collection(collectionPath = "customer")
-                                .document(userId)
-                                .collection(collectionPath = "privateData")
-                                .document("role")
-                                .get()
+                            val privateDataDocument =
+                                database.collection(collectionPath = "customer")
+                                    .document(userId)
+                                    .collection(collectionPath = "privateData")
+                                    .document("role")
+                                    .get()
                             val customer = Customer(
                                 id = document.id,
                                 firstName = document.get("firstName"),
@@ -137,6 +139,41 @@ class CustomerRepositoryImpl : CustomerRepository {
             }
         } catch (e: Exception) {
             onError("Error while updating a Customer information: ${e.message}")
+        }
+    }
+
+    override suspend fun addItemToCart(
+        cartItem: CartItem,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+        try {
+            val userId = getCurrentUserId()
+            if (userId != null) {
+                val firestore = Firebase.firestore
+                val customerCollection = firestore.collection(collectionPath = "customer")
+
+                val existingCustomer = customerCollection
+                    .document(userId)
+                    .get()
+
+                if (existingCustomer.exists) {
+                    val existingCart = existingCustomer.get<List<CartItem>>("cart")
+                    val updatedCart = existingCart + cartItem
+
+                    customerCollection.document(userId).set(
+                        mapOf("cart" to updatedCart),
+                        merge = true
+                    )
+                    onSuccess()
+                } else {
+                    onError("Select customer does not exist.")
+                }
+            } else {
+                onError("User is not available.")
+            }
+        } catch (e: Exception) {
+            onError("Error while adding a product to cart: ${e.message}")
         }
     }
 }

@@ -1,6 +1,7 @@
 package dev.jdgarita.nutrisport.data.domain
 
 import dev.gitlive.firebase.auth.FirebaseUser
+import dev.jdgarita.nutrisport.shared.domain.CartItem
 import dev.jdgarita.nutrisport.shared.domain.Customer
 import dev.jdgarita.nutrisport.shared.util.RequestState
 import kotlinx.coroutines.flow.Flow
@@ -21,6 +22,12 @@ interface CustomerRepository {
 
     suspend fun updateCustomer(
         customer: Customer,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    )
+
+    suspend fun addItemToCart(
+        cartItem: CartItem,
         onSuccess: () -> Unit,
         onError: (String) -> Unit
     )
