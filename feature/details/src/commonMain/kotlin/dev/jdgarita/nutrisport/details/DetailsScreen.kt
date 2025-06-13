@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
@@ -40,6 +41,7 @@ import dev.jdgarita.nutrisport.shared.BorderIdle
 import dev.jdgarita.nutrisport.shared.FontSize
 import dev.jdgarita.nutrisport.shared.IconPrimary
 import dev.jdgarita.nutrisport.shared.Resources
+import dev.jdgarita.nutrisport.shared.RobotoCondensedFont
 import dev.jdgarita.nutrisport.shared.Surface
 import dev.jdgarita.nutrisport.shared.TextPrimary
 import dev.jdgarita.nutrisport.shared.TextSecondary
@@ -167,7 +169,7 @@ fun DetailsScreen(
                                             Spacer(modifier = Modifier.height(4.dp))
                                             Text(
                                                 text = "${selectedProduct.weight}g",
-                                                fontSize = FontSize.EXTRA_SMALL,
+                                                fontSize = FontSize.MEDIUM,
                                                 color = TextPrimary
                                             )
                                         }
@@ -180,6 +182,23 @@ fun DetailsScreen(
                                     fontWeight = FontWeight.Medium
                                 )
                             }
+                            Spacer(modifier = Modifier.height(12.dp))
+                            Text(
+                                text = selectedProduct.title,
+                                fontSize = FontSize.EXTRA_MEDIUM,
+                                fontWeight = FontWeight.Medium,
+                                fontFamily = RobotoCondensedFont(),
+                                color = TextPrimary,
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                            Spacer(modifier = Modifier.height(12.dp))
+
+                            Text(
+                                text = selectedProduct.description,
+                                fontSize = FontSize.REGULAR,
+                                color = TextPrimary
+                            )
                         }
                         Column { }
                     }
