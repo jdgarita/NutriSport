@@ -29,7 +29,7 @@ fun FlavorChip(
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(size = 12.dp))
-            .clickable { onClick() }
+            .clickable(onClick = onClick)
             .background(Surface)
             .border(
                 width = 1.dp,
@@ -42,7 +42,10 @@ fun FlavorChip(
         Text(
             text = flavor,
             fontSize = FontSize.SMALL,
-            color = if (isSelected) TextSecondary else TextPrimary,
+            color = when {
+                isSelected -> TextSecondary
+                else -> TextPrimary
+            },
             fontWeight = FontWeight.Medium
         )
     }
