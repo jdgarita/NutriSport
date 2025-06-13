@@ -47,6 +47,7 @@ import dev.jdgarita.nutrisport.shared.TextPrimary
 import dev.jdgarita.nutrisport.shared.TextSecondary
 import dev.jdgarita.nutrisport.shared.component.InfoCard
 import dev.jdgarita.nutrisport.shared.component.LoadingCard
+import dev.jdgarita.nutrisport.shared.component.PrimaryButton
 import dev.jdgarita.nutrisport.shared.domain.ProductCategory
 import dev.jdgarita.nutrisport.shared.util.DisplayResult
 import org.jetbrains.compose.resources.painterResource
@@ -197,10 +198,20 @@ fun DetailsScreen(
                             Text(
                                 text = selectedProduct.description,
                                 fontSize = FontSize.REGULAR,
+                                lineHeight = FontSize.REGULAR * 1.3f,
                                 color = TextPrimary
                             )
                         }
-                        Column { }
+                        Column(
+                            modifier = Modifier.padding(all = 24.dp)
+                        ) {
+                            PrimaryButton(
+                                icon = Resources.Icon.ShoppingCart,
+                                text = "Add to cart"
+                            ) {
+
+                            }
+                        }
                     }
                 }
             }
