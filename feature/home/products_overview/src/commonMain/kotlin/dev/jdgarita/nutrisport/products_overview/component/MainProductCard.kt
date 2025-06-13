@@ -42,10 +42,10 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import dev.jdgarita.nutrisport.shared.Alpha
 import dev.jdgarita.nutrisport.shared.FontSize
+import dev.jdgarita.nutrisport.shared.IconWhite
 import dev.jdgarita.nutrisport.shared.Resources
 import dev.jdgarita.nutrisport.shared.RobotoCondensedFont
 import dev.jdgarita.nutrisport.shared.TextBrand
-import dev.jdgarita.nutrisport.shared.TextPrimary
 import dev.jdgarita.nutrisport.shared.TextWhite
 import dev.jdgarita.nutrisport.shared.domain.Product
 import dev.jdgarita.nutrisport.shared.domain.ProductCategory
@@ -55,7 +55,7 @@ import org.jetbrains.compose.resources.painterResource
 fun MainProductCard(
     modifier: Modifier = Modifier,
     product: Product,
-    isVisible: Boolean = false,
+    isLarge: Boolean = false,
     onClick: (String) -> Unit
 ) {
 
@@ -82,15 +82,15 @@ fun MainProductCard(
     Box(
         modifier = modifier
             .fillMaxHeight()
+            .clip(RoundedCornerShape(size = 12.dp))
             .clickable { onClick(product.id) }
     ) {
         AsyncImage(
             modifier = Modifier
                 .fillMaxSize()
-                .clip(RoundedCornerShape(size = 12.dp))
                 .animateContentSize()
                 .then(
-                    if (isVisible) Modifier
+                    if (isLarge) Modifier
                         .scale(animatedScale.value)
                         .rotate(animatedRotation.value)
                     else Modifier
@@ -138,6 +138,7 @@ fun MainProductCard(
             Text(
                 text = product.description,
                 fontSize = FontSize.REGULAR,
+                lineHeight = FontSize.REGULAR * 1.3f,
                 color = TextWhite.copy(alpha = Alpha.HALF),
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis
@@ -162,13 +163,14 @@ fun MainProductCard(
                             Icon(
                                 modifier = Modifier.size(14.dp),
                                 painter = painterResource(Resources.Icon.Weight),
-                                contentDescription = "Weight icon"
+                                contentDescription = "Weight icon",
+                                tint = IconWhite
                             )
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(
                                 text = "${product.weight}g",
                                 fontSize = FontSize.EXTRA_SMALL,
-                                color = TextPrimary
+                                color = TextWhite
                             )
                         }
                     }
