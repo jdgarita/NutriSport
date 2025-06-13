@@ -182,10 +182,14 @@ fun DetailsScreen(
                                 AnimatedContent(
                                     targetState = selectedProduct.category,
                                 ) { category ->
-                                    if (ProductCategory.valueOf(category) == ProductCategory.Accessories) {
-                                        Spacer(modifier = Modifier.weight(1f))
-                                    } else {
-                                        Row(
+                                    when (ProductCategory.Accessories) {
+                                        ProductCategory.valueOf(category) -> Spacer(
+                                            modifier = Modifier.weight(
+                                                1f
+                                            )
+                                        )
+
+                                        else -> Row(
                                             verticalAlignment = Alignment.CenterVertically
                                         ) {
                                             Icon(
@@ -258,8 +262,10 @@ fun DetailsScreen(
                             PrimaryButton(
                                 icon = Resources.Icon.ShoppingCart,
                                 text = "Add to Cart",
-                                enabled = if (selectedProduct.flavors?.isNotEmpty() == true) selectedFlavor != null
-                                else true,
+                                enabled = when {
+                                    selectedProduct.flavors?.isNotEmpty() == true -> selectedFlavor != null
+                                    else -> true
+                                },
                                 onClick = {
                                     viewModel.addItemToCart(
                                         onSuccess = { messageBarState.addSuccess("Product added to cart.") },
