@@ -67,7 +67,8 @@ import rememberMessageBarState
 fun HomeGraphScreen(
     navigateToAuth: () -> Unit,
     navigateToProfile: () -> Unit,
-    navigateToAdminPanel: () -> Unit
+    navigateToAdminPanel: () -> Unit,
+    navigateToDetails: (String) -> Unit
 ) {
     val viewModel = koinViewModel<HomeGraphViewModel>()
     val customer by viewModel.customer.collectAsState()
@@ -213,7 +214,9 @@ fun HomeGraphScreen(
                             startDestination = Screen.ProductOverview
                         ) {
                             composable<Screen.ProductOverview> {
-                                ProductsOverviewScreen()
+                                ProductsOverviewScreen { productId ->
+                                    navigateToDetails(productId)
+                                }
                             }
                             composable<Screen.Cart> {}
                             composable<Screen.Categories> {}
