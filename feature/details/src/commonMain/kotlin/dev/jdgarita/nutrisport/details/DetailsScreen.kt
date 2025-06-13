@@ -2,6 +2,7 @@ package dev.jdgarita.nutrisport.details
 
 import ContentWithMessageBar
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -45,6 +46,7 @@ import dev.jdgarita.nutrisport.shared.IconPrimary
 import dev.jdgarita.nutrisport.shared.Resources
 import dev.jdgarita.nutrisport.shared.RobotoCondensedFont
 import dev.jdgarita.nutrisport.shared.Surface
+import dev.jdgarita.nutrisport.shared.SurfaceLighter
 import dev.jdgarita.nutrisport.shared.TextPrimary
 import dev.jdgarita.nutrisport.shared.TextSecondary
 import dev.jdgarita.nutrisport.shared.component.InfoCard
@@ -205,10 +207,11 @@ fun DetailsScreen(
                             )
                         }
                         Column(
-                            modifier = Modifier.padding(all = 24.dp)
+                            modifier = Modifier
+                                .background(SurfaceLighter)
+                                .padding(all = 24.dp)
                         ) {
                             if (selectedProduct.flavors?.isNotEmpty() == true) {
-                                Spacer(modifier = Modifier.height(24.dp))
                                 FlowRow(
                                     modifier = Modifier.fillMaxWidth(),
                                     verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -224,7 +227,7 @@ fun DetailsScreen(
                                     }
                                 }
                             }
-                            Spacer(modifier = Modifier.height(12.dp))
+                            Spacer(modifier = Modifier.height(24.dp))
                             PrimaryButton(
                                 icon = Resources.Icon.ShoppingCart,
                                 text = "Add to cart"
