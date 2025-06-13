@@ -19,40 +19,33 @@ class ProductRepositoryImpl : ProductRepository {
             val userId = getCurrentUserId()
             if (userId != null) {
                 val database = Firebase.firestore
-
                 database.collection(collectionPath = "product")
                     .where { "isDiscounted" equalTo true }
                     .snapshots
                     .collectLatest { query ->
-                        val products = query.documents.map { productDocument ->
+                        val products = query.documents.map { document ->
                             Product(
-                                id = productDocument.id,
-                                title = productDocument.get(field = "title"),
-                                createdAt = productDocument.get(field = "createdAt"),
-                                description = productDocument.get(field = "description"),
-                                thumbnail = productDocument.get(field = "thumbnail"),
-                                category = productDocument.get(field = "category"),
-                                flavors = productDocument.get(field = "flavors"),
-                                weight = productDocument.get(field = "weight"),
-                                price = productDocument.get(field = "price"),
-                                isPopular = productDocument.get(field = "isPopular"),
-                                isDiscounted = productDocument.get(field = "isDiscounted"),
-                                isNew = productDocument.get(field = "isNew")
+                                id = document.id,
+                                title = document.get(field = "title"),
+                                createdAt = document.get(field = "createdAt"),
+                                description = document.get(field = "description"),
+                                thumbnail = document.get(field = "thumbnail"),
+                                category = document.get(field = "category"),
+                                flavors = document.get(field = "flavors"),
+                                weight = document.get(field = "weight"),
+                                price = document.get(field = "price"),
+                                isPopular = document.get(field = "isPopular"),
+                                isDiscounted = document.get(field = "isDiscounted"),
+                                isNew = document.get(field = "isNew")
                             )
                         }
-                        send(
-                            RequestState.Success(
-                                products.map { product ->
-                                    product.copy(title = product.title.uppercase())
-                                }
-                            )
-                        )
+                        send(RequestState.Success(data = products.map { it.copy(title = it.title.uppercase()) }))
                     }
             } else {
-                send(RequestState.Error("User is not available"))
+                send(RequestState.Error("User is not available."))
             }
         } catch (e: Exception) {
-            send(RequestState.Error("Error while searching products: ${e.message}"))
+            send(RequestState.Error("Error while reading the last 10 items from the database: ${e.message}"))
         }
     }
 
@@ -61,40 +54,70 @@ class ProductRepositoryImpl : ProductRepository {
             val userId = getCurrentUserId()
             if (userId != null) {
                 val database = Firebase.firestore
-
                 database.collection(collectionPath = "product")
                     .where { "isNew" equalTo true }
                     .snapshots
                     .collectLatest { query ->
-                        val products = query.documents.map { productDocument ->
+                        val products = query.documents.map { document ->
                             Product(
-                                id = productDocument.id,
-                                title = productDocument.get(field = "title"),
-                                createdAt = productDocument.get(field = "createdAt"),
-                                description = productDocument.get(field = "description"),
-                                thumbnail = productDocument.get(field = "thumbnail"),
-                                category = productDocument.get(field = "category"),
-                                flavors = productDocument.get(field = "flavors"),
-                                weight = productDocument.get(field = "weight"),
-                                price = productDocument.get(field = "price"),
-                                isPopular = productDocument.get(field = "isPopular"),
-                                isDiscounted = productDocument.get(field = "isDiscounted"),
-                                isNew = productDocument.get(field = "isNew")
+                                id = document.id,
+                                title = document.get(field = "title"),
+                                createdAt = document.get(field = "createdAt"),
+                                description = document.get(field = "description"),
+                                thumbnail = document.get(field = "thumbnail"),
+                                category = document.get(field = "category"),
+                                flavors = document.get(field = "flavors"),
+                                weight = document.get(field = "weight"),
+                                price = document.get(field = "price"),
+                                isPopular = document.get(field = "isPopular"),
+                                isDiscounted = document.get(field = "isDiscounted"),
+                                isNew = document.get(field = "isNew")
                             )
                         }
-                        send(
-                            RequestState.Success(
-                                products.map { product ->
-                                    product.copy(title = product.title.uppercase())
-                                }
-                            )
-                        )
+                        send(RequestState.Success(data = products.map { it.copy(title = it.title.uppercase()) }))
                     }
             } else {
-                send(RequestState.Error("User is not available"))
+                send(RequestState.Error("User is not available."))
             }
         } catch (e: Exception) {
-            send(RequestState.Error("Error while searching products: ${e.message}"))
+            send(RequestState.Error("Error while reading the last 10 items from the database: ${e.message}"))
+        }
+    }
+
+    override fun readProductByIdFlow(id: String): Flow<RequestState<Product>> = channelFlow {
+        try {
+            val userId = getCurrentUserId()
+            if (userId != null) {
+                val database = Firebase.firestore
+                database.collection(collectionPath = "product")
+                    .document(id)
+                    .snapshots
+                    .collectLatest { document ->
+                        if (document.exists) {
+                            val product = Product(
+                                id = document.id,
+                                title = document.get(field = "title"),
+                                createdAt = document.get(field = "createdAt"),
+                                description = document.get(field = "description"),
+                                thumbnail = document.get(field = "thumbnail"),
+                                category = document.get(field = "category"),
+                                flavors = document.get(field = "flavors"),
+                                weight = document.get(field = "weight"),
+                                price = document.get(field = "price"),
+                                isPopular = document.get(field = "isPopular"),
+                                isDiscounted = document.get(field = "isDiscounted"),
+                                isNew = document.get(field = "isNew")
+                            )
+                            send(RequestState.Success(product.copy(title = product.title.uppercase())))
+                        } else {
+                            send(RequestState.Error("Selected product does not exist."))
+                        }
+                    }
+            } else {
+                send(RequestState.Error("User is not available."))
+            }
+        } catch (e: Exception) {
+            send(RequestState.Error("Error while reading a selected product: ${e.message}"))
         }
     }
 }
