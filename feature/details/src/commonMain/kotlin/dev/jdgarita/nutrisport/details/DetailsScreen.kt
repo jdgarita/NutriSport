@@ -53,7 +53,9 @@ import dev.jdgarita.nutrisport.shared.TextSecondary
 import dev.jdgarita.nutrisport.shared.component.InfoCard
 import dev.jdgarita.nutrisport.shared.component.LoadingCard
 import dev.jdgarita.nutrisport.shared.component.PrimaryButton
+import dev.jdgarita.nutrisport.shared.component.QuantityCounter
 import dev.jdgarita.nutrisport.shared.domain.ProductCategory
+import dev.jdgarita.nutrisport.shared.domain.QuantityCounterSize
 import dev.jdgarita.nutrisport.shared.util.DisplayResult
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -68,6 +70,7 @@ fun DetailsScreen(
     val messageBarState = rememberMessageBarState()
 
     val product by viewModel.product.collectAsState()
+    val quantity by viewModel.quantity
 
     Scaffold(
         containerColor = Surface,
@@ -91,6 +94,23 @@ fun DetailsScreen(
                             tint = IconPrimary
                         )
                     }
+                },
+                actions = {
+                    QuantityCounter(
+                        size = QuantityCounterSize.Small,
+                        value = quantity,
+                        onMinusClick = {
+                            if (quantity > 1) {
+                                viewModel.updateQuantity(quantity - 1)
+                            }
+                        },
+                        onPlusClick = {
+                            if (quantity < 10) {
+                                viewModel.updateQuantity(quantity + 1)
+                            }
+                        }
+                    )
+                    Spacer(modifier = Modifier.width(16.dp))
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Surface,
