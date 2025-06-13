@@ -69,6 +69,9 @@ class ManageProductViewModel(
                     updateFlavors(product.flavors?.joinToString(",") ?: "")
                     updateWeight(product.weight)
                     updatePrice(product.price)
+                    updateNew(product.isNew)
+                    updatePopular(product.isPopular)
+                    updateDiscounted(product.isDiscounted)
                 }
             }
         }
