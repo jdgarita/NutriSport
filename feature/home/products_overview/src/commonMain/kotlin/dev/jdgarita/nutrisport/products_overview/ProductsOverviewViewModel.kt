@@ -11,23 +11,9 @@ import kotlinx.coroutines.flow.stateIn
 class ProductsOverviewViewModel(
     private val productRepository: ProductRepository
 ) : ViewModel() {
-    val discountedProducts = productRepository.readDiscountedProducts()
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = RequestState.Loading
-        )
-
-    val newProducts = productRepository.readNewProducts()
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = RequestState.Loading
-        )
-
     val products = combine(
-        newProducts,
-        discountedProducts
+        productRepository.readNewProducts(),
+        productRepository.readDiscountedProducts()
     ) { new, discounted ->
         when {
             new is RequestState.Success && discounted is RequestState.Success -> {
