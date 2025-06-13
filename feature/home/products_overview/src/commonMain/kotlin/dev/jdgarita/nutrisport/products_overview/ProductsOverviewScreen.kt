@@ -39,7 +39,9 @@ import dev.jdgarita.nutrisport.shared.util.DisplayResult
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun ProductsOverviewScreen() {
+fun ProductsOverviewScreen(
+    navigateToDetails: (String) -> Unit
+) {
     val viewModel = koinViewModel<ProductsOverviewViewModel>()
     val products by viewModel.products.collectAsState()
     val listState = rememberLazyListState()
@@ -104,7 +106,7 @@ fun ProductsOverviewScreen() {
                                     product = product,
                                     isLarge = isLarge,
                                     onClick = {
-
+                                        navigateToDetails(product.id)
                                     }
                                 )
                             }
@@ -137,7 +139,7 @@ fun ProductsOverviewScreen() {
                                     modifier = Modifier,
                                     product = product,
                                     onClick = {
-
+                                        navigateToDetails(product.id)
                                     }
                                 )
                             }
