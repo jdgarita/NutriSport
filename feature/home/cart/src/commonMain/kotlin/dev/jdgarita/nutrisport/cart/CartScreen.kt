@@ -61,20 +61,20 @@ fun CartScreen() {
                                 cartItem = pair.first,
                                 product = pair.second,
                                 onMinusClick = { quantity ->
-//                                    viewModel.updateCartItemQuantity(
-//                                        id = pair.first.id,
-//                                        quantity = quantity,
-//                                        onSuccess = {},
-//                                        onError = { messageBarState.addError(it) }
-//                                    )
+                                    viewModel.updateCartItemQuantity(
+                                        id = pair.first.id,
+                                        quantity = quantity,
+                                        onSuccess = {},
+                                        onError = { messageBarState.addError(it) }
+                                    )
                                 },
                                 onPlusClick = { quantity ->
-//                                    viewModel.updateCartItemQuantity(
-//                                        id = pair.first.id,
-//                                        quantity = quantity,
-//                                        onSuccess = {},
-//                                        onError = { messageBarState.addError(it) }
-//                                    )
+                                    viewModel.updateCartItemQuantity(
+                                        id = pair.first.id,
+                                        quantity = quantity,
+                                        onSuccess = {},
+                                        onError = { messageBarState.addError(it) }
+                                    )
                                 },
                                 onDeleteClick = {
 //                                    viewModel.deleteCartItem(
