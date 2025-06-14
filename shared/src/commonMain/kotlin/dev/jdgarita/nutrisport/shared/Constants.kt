@@ -5,4 +5,7 @@ object Constants {
 
     const val MAX_QUANTITY = 10
     const val MIN_QUANTITY = 1
+
+    const val RETURN_URL = "com.stevdza.san.nutrisport://paypalpay?success=true"
+    const val CANCEL_URL = "com.stevdza.san.nutrisport://paypalpay?cancel=true"
 }
