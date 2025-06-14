@@ -15,6 +15,7 @@ import dev.jdgarita.nutrisport.shared.Surface
 import dev.jdgarita.nutrisport.shared.component.InfoCard
 import dev.jdgarita.nutrisport.shared.component.LoadingCard
 import dev.jdgarita.nutrisport.shared.component.PrimaryButton
+import dev.jdgarita.nutrisport.shared.util.DisplayResult
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
