@@ -41,6 +41,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dev.jdgarita.nutrisport.cart.CartScreen
+import dev.jdgarita.nutrisport.categories.CategoriesScreen
 import dev.jdgarita.nutrisport.home.component.BottomBar
 import dev.jdgarita.nutrisport.home.component.CustomDrawer
 import dev.jdgarita.nutrisport.home.domain.BottomBarDestination
@@ -222,7 +223,11 @@ fun HomeGraphScreen(
                             composable<Screen.Cart> {
                                 CartScreen()
                             }
-                            composable<Screen.Categories> {}
+                            composable<Screen.Categories> {
+                                CategoriesScreen {
+
+                                }
+                            }
                         }
                         Spacer(modifier = Modifier.height(12.dp))
                         Box(
