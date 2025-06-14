@@ -4,6 +4,7 @@ import dev.jdgarita.nutrisport.admin_panel.AdminPanelViewModel
 import dev.jdgarita.nutrisport.auth.AuthViewModel
 import dev.jdgarita.nutrisport.cart.CartViewModel
 import dev.jdgarita.nutrisport.category_search.CategorySearchViewModel
+import dev.jdgarita.nutrisport.checkout.CheckoutViewModel
 import dev.jdgarita.nutrisport.data.AdminRepositoryImpl
 import dev.jdgarita.nutrisport.data.CustomerRepositoryImpl
 import dev.jdgarita.nutrisport.data.ProductRepositoryImpl
@@ -36,6 +37,7 @@ val sharedModule = module {
     viewModelOf(::DetailsViewModel)
     viewModelOf(::CartViewModel)
     viewModelOf(::CategorySearchViewModel)
+    viewModelOf(::CheckoutViewModel)
 }
 
 expect val targetModule: Module
