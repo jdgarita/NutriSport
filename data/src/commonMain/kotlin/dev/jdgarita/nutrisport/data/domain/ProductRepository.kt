@@ -1,6 +1,7 @@
 package dev.jdgarita.nutrisport.data.domain
 
 import dev.jdgarita.nutrisport.shared.domain.Product
+import dev.jdgarita.nutrisport.shared.domain.ProductCategory
 import dev.jdgarita.nutrisport.shared.util.RequestState
 import kotlinx.coroutines.flow.Flow
 
@@ -12,4 +13,5 @@ interface ProductRepository {
     fun readNewProducts(): Flow<RequestState<List<Product>>>
     fun readProductByIdFlow(id: String): Flow<RequestState<Product>>
     fun readProductsByIdsFlow(ids: List<String>): Flow<RequestState<List<Product>>>
+    fun readProductsByCategoryFlow(category: ProductCategory): Flow<RequestState<List<Product>>>
 }
