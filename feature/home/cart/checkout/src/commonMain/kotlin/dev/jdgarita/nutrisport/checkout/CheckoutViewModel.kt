@@ -6,6 +6,9 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dev.jdgarita.nutrisport.checkout.domain.Amount
+import dev.jdgarita.nutrisport.checkout.domain.PaypalApi
+import dev.jdgarita.nutrisport.checkout.domain.ShippingAddress
 import dev.jdgarita.nutrisport.data.domain.CustomerRepository
 import dev.jdgarita.nutrisport.data.domain.OrderRepository
 import dev.jdgarita.nutrisport.shared.domain.CartItem
@@ -34,7 +37,7 @@ class CheckoutViewModel(
     private val customerRepository: CustomerRepository,
     private val orderRepository: OrderRepository,
     private val savedStateHandle: SavedStateHandle,
-    // private val paypalApi: PaypalApi,
+    private val paypalApi: PaypalApi,
 ) : ViewModel() {
     var screenReady: RequestState<Unit> by mutableStateOf(RequestState.Loading)
     var screenState: CheckoutScreenState by mutableStateOf(CheckoutScreenState())
@@ -52,14 +55,14 @@ class CheckoutViewModel(
 
     init {
         viewModelScope.launch {
-//            paypalApi.fetchAccessToken(
-//                onSuccess = { token ->
-//                    println("TOKEN RECEIVED: $token")
-//                },
-//                onError = { message ->
-//                    println(message)
-//                }
-//            )
+            paypalApi.fetchAccessToken(
+                onSuccess = { token ->
+                    println("TOKEN RECEIVED: $token")
+                },
+                onError = { message ->
+                    println(message)
+                }
+            )
         }
         viewModelScope.launch {
             customerRepository.readCustomerFlow().collectLatest { data ->
@@ -186,22 +189,22 @@ class CheckoutViewModel(
         val totalAmount = savedStateHandle.get<String>("totalAmount")
         if (totalAmount != null) {
             viewModelScope.launch {
-//                paypalApi.beginCheckout(
-//                    amount = Amount(
-//                        currencyCode = "USD",
-//                        value = totalAmount
-//                    ),
-//                    fullName = "${screenState.firstName} ${screenState.lastName}",
-//                    shippingAddress = ShippingAddress(
-//                        addressLine1 = screenState.address ?: "Unknown address",
-//                        city = screenState.city ?: "Unknown city",
-//                        state = screenState.country.name,
-//                        postalCode = screenState.postalCode.toString(),
-//                        countryCode = screenState.country.code
-//                    ),
-//                    onSuccess = onSuccess,
-//                    onError = onError
-//                )
+                paypalApi.beginCheckout(
+                    amount = Amount(
+                        currencyCode = "USD",
+                        value = totalAmount
+                    ),
+                    fullName = "${screenState.firstName} ${screenState.lastName}",
+                    shippingAddress = ShippingAddress(
+                        addressLine1 = screenState.address ?: "Unknown address",
+                        city = screenState.city ?: "Unknown city",
+                        state = screenState.country.name,
+                        postalCode = screenState.postalCode.toString(),
+                        countryCode = screenState.country.code
+                    ),
+                    onSuccess = onSuccess,
+                    onError = onError
+                )
             }
         } else {
             onError("Total amount couldn't be calculated.")
