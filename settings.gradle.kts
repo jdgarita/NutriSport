@@ -40,6 +40,7 @@ include(":feature:home:categories")
 include(":feature:home:categories:category_search")
 include(":feature:home:products_overview")
 
+include(":feature:payment_completed")
 include(":feature:navigation")
 include(":feature:profile")
 include(":feature:auth")
