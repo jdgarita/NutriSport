@@ -38,7 +38,7 @@ class DetailsViewModel(
         quantity = newValue
     }
 
-    fun updateSelectedFlavor(newValue: String?) {
+    fun updateFlavor(newValue: String?) {
         selectedFlavor = newValue
     }
 

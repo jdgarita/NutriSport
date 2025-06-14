@@ -47,9 +47,12 @@ import dev.jdgarita.nutrisport.shared.IconPrimary
 import dev.jdgarita.nutrisport.shared.Resources
 import dev.jdgarita.nutrisport.shared.RobotoCondensedFont
 import dev.jdgarita.nutrisport.shared.Surface
+import dev.jdgarita.nutrisport.shared.SurfaceBrand
+import dev.jdgarita.nutrisport.shared.SurfaceError
 import dev.jdgarita.nutrisport.shared.SurfaceLighter
 import dev.jdgarita.nutrisport.shared.TextPrimary
 import dev.jdgarita.nutrisport.shared.TextSecondary
+import dev.jdgarita.nutrisport.shared.TextWhite
 import dev.jdgarita.nutrisport.shared.component.InfoCard
 import dev.jdgarita.nutrisport.shared.component.LoadingCard
 import dev.jdgarita.nutrisport.shared.component.PrimaryButton
@@ -60,15 +63,11 @@ import dev.jdgarita.nutrisport.shared.util.DisplayResult
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import rememberMessageBarState
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailsScreen(
-    navigateBack: () -> Unit
-) {
-    val viewModel = koinViewModel<DetailsViewModel>()
+fun DetailsScreen(navigateBack: () -> Unit) {
     val messageBarState = rememberMessageBarState()
-
+    val viewModel = koinViewModel<DetailsViewModel>()
     val product by viewModel.product.collectAsState()
     val quantity = viewModel.quantity
     val selectedFlavor = viewModel.selectedFlavor
@@ -86,30 +85,20 @@ fun DetailsScreen(
                     )
                 },
                 navigationIcon = {
-                    IconButton(
-                        onClick = navigateBack
-                    ) {
+                    IconButton(onClick = navigateBack) {
                         Icon(
                             painter = painterResource(Resources.Icon.BackArrow),
-                            contentDescription = "Back arrow icon",
+                            contentDescription = "Back Arrow icon",
                             tint = IconPrimary
                         )
                     }
                 },
                 actions = {
                     QuantityCounter(
-                        size = QuantityCounterSize.Small,
+                        size = QuantityCounterSize.Large,
                         value = quantity,
-                        onMinusClick = {
-                            if (quantity > 1) {
-                                viewModel.updateQuantity(quantity - 1)
-                            }
-                        },
-                        onPlusClick = {
-                            if (quantity < 10) {
-                                viewModel.updateQuantity(quantity + 1)
-                            }
-                        }
+                        onMinusClick = viewModel::updateQuantity,
+                        onPlusClick = viewModel::updateQuantity
                     )
                     Spacer(modifier = Modifier.width(16.dp))
                 },
@@ -122,23 +111,12 @@ fun DetailsScreen(
                 )
             )
         }
-    )
-    { padding ->
+    ) { padding ->
         product.DisplayResult(
-            onLoading = {
-                LoadingCard(
-                    modifier = Modifier.fillMaxSize()
-                )
-            },
-            onError = { errorMessage ->
-                InfoCard(
-                    image = Resources.Image.Cat,
-                    title = "Oops",
-                    subtitle = errorMessage
-                )
-            },
+            onLoading = { LoadingCard(modifier = Modifier.fillMaxSize()) },
             onSuccess = { selectedProduct ->
                 ContentWithMessageBar(
+                    contentBackgroundColor = Surface,
                     modifier = Modifier
                         .padding(
                             top = padding.calculateTopPadding(),
@@ -146,7 +124,10 @@ fun DetailsScreen(
                         ),
                     messageBarState = messageBarState,
                     errorMaxLines = 2,
-                    contentBackgroundColor = Surface
+                    errorContainerColor = SurfaceError,
+                    errorContentColor = TextWhite,
+                    successContainerColor = SurfaceBrand,
+                    successContentColor = TextPrimary
                 ) {
                     Column {
                         Column(
@@ -170,7 +151,7 @@ fun DetailsScreen(
                                     .data(selectedProduct.thumbnail)
                                     .crossfade(enable = true)
                                     .build(),
-                                contentDescription = "Product thumbnail",
+                                contentDescription = "Product thumbnail image",
                                 contentScale = ContentScale.Crop
                             )
                             Spacer(modifier = Modifier.height(12.dp))
@@ -180,16 +161,12 @@ fun DetailsScreen(
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 AnimatedContent(
-                                    targetState = selectedProduct.category,
+                                    targetState = selectedProduct.category
                                 ) { category ->
-                                    when (ProductCategory.Accessories) {
-                                        ProductCategory.valueOf(category) -> Spacer(
-                                            modifier = Modifier.weight(
-                                                1f
-                                            )
-                                        )
-
-                                        else -> Row(
+                                    if (ProductCategory.valueOf(category) == ProductCategory.Accessories) {
+                                        Spacer(modifier = Modifier.weight(1f))
+                                    } else {
+                                        Row(
                                             verticalAlignment = Alignment.CenterVertically
                                         ) {
                                             Icon(
@@ -197,10 +174,10 @@ fun DetailsScreen(
                                                 painter = painterResource(Resources.Icon.Weight),
                                                 contentDescription = "Weight icon"
                                             )
-                                            Spacer(modifier = Modifier.height(4.dp))
+                                            Spacer(modifier = Modifier.width(4.dp))
                                             Text(
                                                 text = "${selectedProduct.weight}g",
-                                                fontSize = FontSize.MEDIUM,
+                                                fontSize = FontSize.REGULAR,
                                                 color = TextPrimary
                                             )
                                         }
@@ -208,7 +185,7 @@ fun DetailsScreen(
                                 }
                                 Text(
                                     text = "$${selectedProduct.price}",
-                                    fontSize = FontSize.EXTRA_REGULAR,
+                                    fontSize = FontSize.MEDIUM,
                                     color = TextSecondary,
                                     fontWeight = FontWeight.Medium
                                 )
@@ -224,21 +201,18 @@ fun DetailsScreen(
                                 overflow = TextOverflow.Ellipsis
                             )
                             Spacer(modifier = Modifier.height(12.dp))
-
                             Text(
                                 text = selectedProduct.description,
                                 fontSize = FontSize.REGULAR,
-                                lineHeight = FontSize.REGULAR * 1.3f,
+                                lineHeight = FontSize.REGULAR * 1.3,
                                 color = TextPrimary
                             )
                         }
                         Column(
                             modifier = Modifier
                                 .background(
-                                    when {
-                                        selectedProduct.flavors?.isNotEmpty() == true -> SurfaceLighter
-                                        else -> Surface
-                                    }
+                                    if (selectedProduct.flavors?.isNotEmpty() == true) SurfaceLighter
+                                    else Surface
                                 )
                                 .padding(all = 24.dp)
                         ) {
@@ -252,20 +226,18 @@ fun DetailsScreen(
                                         FlavorChip(
                                             flavor = flavor,
                                             isSelected = selectedFlavor == flavor,
-                                            onClick = { viewModel.updateSelectedFlavor(flavor) }
+                                            onClick = { viewModel.updateFlavor(flavor) }
                                         )
                                         Spacer(modifier = Modifier.width(8.dp))
                                     }
                                 }
+                                Spacer(modifier = Modifier.height(24.dp))
                             }
-                            Spacer(modifier = Modifier.height(24.dp))
                             PrimaryButton(
                                 icon = Resources.Icon.ShoppingCart,
                                 text = "Add to Cart",
-                                enabled = when {
-                                    selectedProduct.flavors?.isNotEmpty() == true -> selectedFlavor != null
-                                    else -> true
-                                },
+                                enabled = if (selectedProduct.flavors?.isNotEmpty() == true) selectedFlavor != null
+                                else true,
                                 onClick = {
                                     viewModel.addItemToCart(
                                         onSuccess = { messageBarState.addSuccess("Product added to cart.") },
@@ -276,6 +248,13 @@ fun DetailsScreen(
                         }
                     }
                 }
+            },
+            onError = { message ->
+                InfoCard(
+                    image = Resources.Image.Cat,
+                    title = "Oops!",
+                    subtitle = message
+                )
             }
         )
     }
