@@ -5,12 +5,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import dev.jdgarita.nutrisport.details.DetailsScreen
 import dev.jdgarita.nutrisport.admin_panel.AdminPanelScreen
 import dev.jdgarita.nutrisport.auth.AuthScreen
+import dev.jdgarita.nutrisport.category_search.CategorySearchScreen
+import dev.jdgarita.nutrisport.details.DetailsScreen
 import dev.jdgarita.nutrisport.home.HomeGraphScreen
 import dev.jdgarita.nutrisport.manage_product.ManageProductScreen
 import dev.jdgarita.nutrisport.profile.ProfileScreen
+import dev.jdgarita.nutrisport.shared.domain.ProductCategory
 import dev.jdgarita.nutrisport.shared.navigation.Screen
 
 @Composable
@@ -44,6 +46,22 @@ fun SetupNavGraph(startDestination: Screen = Screen.Auth) {
                 },
                 navigateToDetails = { productId ->
                     navController.navigate(Screen.Details(id = productId))
+                },
+                navigateToCategorySearch = { category ->
+                    navController.navigate(Screen.CategorySearch(category = category))
+                }
+            )
+        }
+
+        composable<Screen.CategorySearch> {
+            val category = ProductCategory.valueOf(it.toRoute<Screen.CategorySearch>().category)
+            CategorySearchScreen(
+                category = category,
+                navigateToDetails = { id ->
+                    navController.navigate(Screen.Details(id))
+                },
+                navigateBack = {
+                    navController.navigateUp()
                 }
             )
         }
