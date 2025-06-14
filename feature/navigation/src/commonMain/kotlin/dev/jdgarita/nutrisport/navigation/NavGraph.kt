@@ -8,6 +8,7 @@ import androidx.navigation.toRoute
 import dev.jdgarita.nutrisport.admin_panel.AdminPanelScreen
 import dev.jdgarita.nutrisport.auth.AuthScreen
 import dev.jdgarita.nutrisport.category_search.CategorySearchScreen
+import dev.jdgarita.nutrisport.checkout.CheckoutScreen
 import dev.jdgarita.nutrisport.details.DetailsScreen
 import dev.jdgarita.nutrisport.home.HomeGraphScreen
 import dev.jdgarita.nutrisport.manage_product.ManageProductScreen
@@ -49,6 +50,9 @@ fun SetupNavGraph(startDestination: Screen = Screen.Auth) {
                 },
                 navigateToCategorySearch = { category ->
                     navController.navigate(Screen.CategorySearch(category = category))
+                },
+                navigateToCheckout = { totalAmount ->
+                    navController.navigate(Screen.Checkout(totalAmount = totalAmount))
                 }
             )
         }
@@ -96,6 +100,19 @@ fun SetupNavGraph(startDestination: Screen = Screen.Auth) {
             DetailsScreen {
                 navController.navigateUp()
             }
+        }
+
+        composable<Screen.Checkout> {
+            val totalAmount = it.toRoute<Screen.Checkout>().totalAmount
+            CheckoutScreen(
+                totalAmount = totalAmount.toDoubleOrNull() ?: 0.0,
+                navigateBack = {
+                    navController.navigateUp()
+                },
+                navigateToPaymentCompleted = { isSuccess, error ->
+                    navController.navigate(Screen.PaymentCompleted(isSuccess, error))
+                }
+            )
         }
     }
 }
