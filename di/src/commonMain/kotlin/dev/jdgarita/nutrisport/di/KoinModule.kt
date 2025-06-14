@@ -16,6 +16,7 @@ import dev.jdgarita.nutrisport.data.domain.ProductRepository
 import dev.jdgarita.nutrisport.details.DetailsViewModel
 import dev.jdgarita.nutrisport.home.HomeGraphViewModel
 import dev.jdgarita.nutrisport.manage_product.ManageProductViewModel
+import dev.jdgarita.nutrisport.payment_completed.PaymentViewModel
 import dev.jdgarita.nutrisport.products_overview.ProductsOverviewViewModel
 import dev.jdgarita.nutrisport.profile.ProfileViewModel
 import org.koin.core.KoinApplication
@@ -41,6 +42,7 @@ val sharedModule = module {
     viewModelOf(::CartViewModel)
     viewModelOf(::CategorySearchViewModel)
     viewModelOf(::CheckoutViewModel)
+    viewModelOf(::PaymentViewModel)
 }
 
 expect val targetModule: Module
