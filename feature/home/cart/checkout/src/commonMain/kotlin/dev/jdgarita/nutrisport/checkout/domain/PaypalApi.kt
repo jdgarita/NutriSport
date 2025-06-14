@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
+import openWebBrowser
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
@@ -130,7 +131,7 @@ class PaypalApi {
             return
         }
 
-        // openWebBrowser(url = url)
+        openWebBrowser(url = url)
         onSuccess()
     }
 }
