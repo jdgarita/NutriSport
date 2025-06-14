@@ -54,6 +54,7 @@ kotlin {
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.serialization)
+            implementation(libs.browser.kmp)
 
             implementation(project(path = ":shared"))
             implementation(project(path = ":data"))
