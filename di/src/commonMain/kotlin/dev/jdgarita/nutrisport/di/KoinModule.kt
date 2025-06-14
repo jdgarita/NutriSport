@@ -7,9 +7,11 @@ import dev.jdgarita.nutrisport.category_search.CategorySearchViewModel
 import dev.jdgarita.nutrisport.checkout.CheckoutViewModel
 import dev.jdgarita.nutrisport.data.AdminRepositoryImpl
 import dev.jdgarita.nutrisport.data.CustomerRepositoryImpl
+import dev.jdgarita.nutrisport.data.OrderRepositoryImpl
 import dev.jdgarita.nutrisport.data.ProductRepositoryImpl
 import dev.jdgarita.nutrisport.data.domain.AdminRepository
 import dev.jdgarita.nutrisport.data.domain.CustomerRepository
+import dev.jdgarita.nutrisport.data.domain.OrderRepository
 import dev.jdgarita.nutrisport.data.domain.ProductRepository
 import dev.jdgarita.nutrisport.details.DetailsViewModel
 import dev.jdgarita.nutrisport.home.HomeGraphViewModel
@@ -26,6 +28,7 @@ val sharedModule = module {
     single<CustomerRepository> { CustomerRepositoryImpl() }
     single<AdminRepository> { AdminRepositoryImpl() }
     single<ProductRepository> { ProductRepositoryImpl() }
+    single<OrderRepository> { OrderRepositoryImpl(get()) }
     viewModelOf(::AuthViewModel)
     viewModelOf(::HomeGraphViewModel)
     viewModelOf(::ProfileViewModel)
