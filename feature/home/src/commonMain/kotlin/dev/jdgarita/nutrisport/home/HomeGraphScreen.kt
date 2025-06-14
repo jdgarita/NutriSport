@@ -40,6 +40,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import dev.jdgarita.nutrisport.cart.CartScreen
 import dev.jdgarita.nutrisport.home.component.BottomBar
 import dev.jdgarita.nutrisport.home.component.CustomDrawer
 import dev.jdgarita.nutrisport.home.domain.BottomBarDestination
@@ -218,7 +219,9 @@ fun HomeGraphScreen(
                                     navigateToDetails(productId)
                                 }
                             }
-                            composable<Screen.Cart> {}
+                            composable<Screen.Cart> {
+                                CartScreen()
+                            }
                             composable<Screen.Categories> {}
                         }
                         Spacer(modifier = Modifier.height(12.dp))
