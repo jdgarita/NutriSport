@@ -12,6 +12,7 @@ import dev.jdgarita.nutrisport.checkout.CheckoutScreen
 import dev.jdgarita.nutrisport.details.DetailsScreen
 import dev.jdgarita.nutrisport.home.HomeGraphScreen
 import dev.jdgarita.nutrisport.manage_product.ManageProductScreen
+import dev.jdgarita.nutrisport.payment_completed.PaymentCompleted
 import dev.jdgarita.nutrisport.profile.ProfileScreen
 import dev.jdgarita.nutrisport.shared.domain.ProductCategory
 import dev.jdgarita.nutrisport.shared.navigation.Screen
@@ -111,6 +112,18 @@ fun SetupNavGraph(startDestination: Screen = Screen.Auth) {
                 },
                 navigateToPaymentCompleted = { isSuccess, error ->
                     navController.navigate(Screen.PaymentCompleted(isSuccess, error))
+                }
+            )
+        }
+
+        composable<Screen.PaymentCompleted> {
+            PaymentCompleted(
+                navigateBack = {
+                    navController.navigate(Screen.HomeGraph) {
+                        launchSingleTop = true
+                        // Clear backstack completely
+                        popUpTo(0) { inclusive = true }
+                    }
                 }
             )
         }
