@@ -7,9 +7,11 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.jdgarita.nutrisport.data.domain.CustomerRepository
+import dev.jdgarita.nutrisport.data.domain.OrderRepository
 import dev.jdgarita.nutrisport.shared.domain.CartItem
 import dev.jdgarita.nutrisport.shared.domain.Country
 import dev.jdgarita.nutrisport.shared.domain.Customer
+import dev.jdgarita.nutrisport.shared.domain.Order
 import dev.jdgarita.nutrisport.shared.domain.PhoneNumber
 import dev.jdgarita.nutrisport.shared.util.RequestState
 import kotlinx.coroutines.flow.collectLatest
@@ -30,7 +32,7 @@ data class CheckoutScreenState(
 
 class CheckoutViewModel(
     private val customerRepository: CustomerRepository,
-    //   private val orderRepository: OrderRepository,
+    private val orderRepository: OrderRepository,
     private val savedStateHandle: SavedStateHandle,
     // private val paypalApi: PaypalApi,
 ) : ViewModel() {
@@ -164,16 +166,16 @@ class CheckoutViewModel(
         onError: (String) -> Unit,
     ) {
         viewModelScope.launch {
-//            orderRepository.createTheOrder(
-//                order = Order(
-//                    customerId = screenState.id,
-//                    items = screenState.cart,
-//                    totalAmount = savedStateHandle.get<String>("totalAmount")?.toDoubleOrNull()
-//                        ?: 0.0
-//                ),
-//                onSuccess = onSuccess,
-//                onError = onError
-//            )
+            orderRepository.createTheOrder(
+                order = Order(
+                    customerId = screenState.id,
+                    items = screenState.cart,
+                    totalAmount = savedStateHandle.get<String>("totalAmount")?.toDoubleOrNull()
+                        ?: 0.0
+                ),
+                onSuccess = onSuccess,
+                onError = onError
+            )
         }
     }
 
