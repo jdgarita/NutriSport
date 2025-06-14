@@ -5,6 +5,7 @@ import dev.jdgarita.nutrisport.auth.AuthViewModel
 import dev.jdgarita.nutrisport.cart.CartViewModel
 import dev.jdgarita.nutrisport.category_search.CategorySearchViewModel
 import dev.jdgarita.nutrisport.checkout.CheckoutViewModel
+import dev.jdgarita.nutrisport.checkout.domain.PaypalApi
 import dev.jdgarita.nutrisport.data.AdminRepositoryImpl
 import dev.jdgarita.nutrisport.data.CustomerRepositoryImpl
 import dev.jdgarita.nutrisport.data.OrderRepositoryImpl
@@ -30,6 +31,7 @@ val sharedModule = module {
     single<AdminRepository> { AdminRepositoryImpl() }
     single<ProductRepository> { ProductRepositoryImpl() }
     single<OrderRepository> { OrderRepositoryImpl(get()) }
+    single<PaypalApi> { PaypalApi() }
     viewModelOf(::AuthViewModel)
     viewModelOf(::HomeGraphViewModel)
     viewModelOf(::ProfileViewModel)
