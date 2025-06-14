@@ -224,9 +224,11 @@ fun HomeGraphScreen(
                                 CartScreen()
                             }
                             composable<Screen.Categories> {
-                                CategoriesScreen {
-
-                                }
+                                CategoriesScreen(
+                                    navigateToCategorySearch = { category ->
+                                        navigationController.navigate(Screen.CategorySearch(category))
+                                    }
+                                )
                             }
                         }
                         Spacer(modifier = Modifier.height(12.dp))
