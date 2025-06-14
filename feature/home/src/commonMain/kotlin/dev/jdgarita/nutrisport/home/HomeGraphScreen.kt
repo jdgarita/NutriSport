@@ -229,6 +229,7 @@ fun HomeGraphScreen(
                             modifier = Modifier.padding(all = 12.dp)
                         ) {
                             BottomBar(
+                                customer = customer,
                                 selected = selectedDestination,
                                 onSelect = { destination ->
                                     navigationController.navigate(destination.screen) {
