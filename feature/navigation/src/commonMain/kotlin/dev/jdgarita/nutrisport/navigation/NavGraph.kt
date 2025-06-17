@@ -1,6 +1,9 @@
 package dev.jdgarita.nutrisport.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -16,10 +19,23 @@ import dev.jdgarita.nutrisport.payment_completed.PaymentCompleted
 import dev.jdgarita.nutrisport.profile.ProfileScreen
 import dev.jdgarita.nutrisport.shared.domain.ProductCategory
 import dev.jdgarita.nutrisport.shared.navigation.Screen
+import dev.jdgarita.nutrisport.shared.util.IntentHandler
+import org.koin.compose.koinInject
 
 @Composable
 fun SetupNavGraph(startDestination: Screen = Screen.Auth) {
     val navController = rememberNavController()
+
+    val intentHandler = koinInject<IntentHandler>()
+    val navigateTo by intentHandler.navigateTo.collectAsState()
+
+    LaunchedEffect(navigateTo) {
+        navigateTo?.let { paymentCompleted ->
+            navController.navigate(paymentCompleted)
+            intentHandler.resetNavigation()
+        }
+    }
+
 
     NavHost(
         navController = navController,

@@ -8,8 +8,14 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import dev.jdgarita.nutrisport.shared.util.IntentHandler
+import dev.jdgarita.nutrisport.shared.util.PreferencesRepository
+import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
+
+    private val intentHandler: IntentHandler by inject()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         enableEdgeToEdge(
@@ -36,17 +42,19 @@ class MainActivity : ComponentActivity() {
         val isSuccess = uri?.getQueryParameter("success")
         val isCancelled = uri?.getQueryParameter("cancel")
         val token = uri?.getQueryParameter("token")
+
+        PreferencesRepository.savePayPalData(
+            isSuccess = isSuccess?.toBooleanStrictOrNull(),
+            error = if (isCancelled == "null") null
+            else "Payment has been canceled.",
+            token = token
+        )
+
+        intentHandler.navigateToPaymentCompleted(
+            isSuccess = isSuccess?.toBooleanStrictOrNull(),
+            error = if (isCancelled == "null") null
+            else "Payment has been canceled.",
+            token = token
+        )
     }
-//    PreferencesRepository.savePayPalData(
-//        isSuccess = isSuccess?.toBooleanStrictOrNull(),
-//        error = if (isCancelled == "null") null
-//        else "Payment has been canceled.",
-//        token = token
-//    )
-//        intentHandler.navigateToPaymentCompleted(
-//            isSuccess = isSuccess?.toBooleanStrictOrNull(),
-//            error = if (isCancelled == "null") null
-//            else "Payment has been canceled.",
-//            token = token
-//        )
 }
