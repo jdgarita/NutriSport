@@ -39,6 +39,9 @@ kotlin {
             implementation(libs.kotlinx.serialization)
             implementation(libs.compose.navigation)
 
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+
             implementation(project(path = ":feature:auth"))
             implementation(project(path = ":feature:home"))
             implementation(project(path = ":feature:profile"))
