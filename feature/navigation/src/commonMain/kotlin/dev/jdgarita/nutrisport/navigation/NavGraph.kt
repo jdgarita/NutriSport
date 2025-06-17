@@ -36,7 +36,6 @@ fun SetupNavGraph(startDestination: Screen = Screen.Auth) {
         }
     }
 
-
     NavHost(
         navController = navController,
         startDestination = startDestination,
