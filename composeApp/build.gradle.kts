@@ -23,6 +23,7 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
+            export(libs.kmp.notifier)
         }
     }
     
@@ -48,6 +49,8 @@ kotlin {
             implementation(libs.firebase.app)
 
             implementation(libs.koin.compose)
+
+            api(libs.kmp.notifier)
 
             implementation(project(path = ":feature:navigation"))
             implementation(project(path = ":shared"))
