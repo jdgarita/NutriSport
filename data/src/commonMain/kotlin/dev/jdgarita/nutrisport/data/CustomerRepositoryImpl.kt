@@ -11,34 +11,31 @@ import dev.jdgarita.nutrisport.shared.util.RequestState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collectLatest
-
 class CustomerRepositoryImpl : CustomerRepository {
+    override fun getCurrentUserId(): String? {
+        return Firebase.auth.currentUser?.uid
+    }
 
     override suspend fun createCustomer(
         user: FirebaseUser?,
         onSuccess: () -> Unit,
-        onError: (String) -> Unit
-    ) = try {
-        if (user != null) {
-            val customerCollection = Firebase.firestore.collection(collectionPath = "customer")
-            val customer = Customer(
-                id = user.uid,
-                firstName = user.displayName?.split(" ")?.firstOrNull() ?: "Unknown",
-                lastName = user.displayName?.split(" ")?.lastOrNull() ?: "Unknown",
-                email = user.email ?: "Unknown",
-                city = null,
-                postalCode = null,
-                address = null,
-                phoneNumber = null,
-                cart = emptyList(),
-                isAdmin = false
-            )
+        onError: (String) -> Unit,
+    ) {
+        try {
+            if (user != null) {
+                val customerCollection = Firebase.firestore.collection(collectionPath = "customer")
+                val customer = Customer(
+                    id = user.uid,
+                    firstName = user.displayName?.split(" ")?.firstOrNull() ?: "Unknown",
+                    lastName = user.displayName?.split(" ")?.lastOrNull() ?: "Unknown",
+                    email = user.email ?: "Unknown",
+                )
 
-            val customerExists = customerCollection.document(user.uid).get().exists
+                val customerExists = customerCollection.document(user.uid).get().exists
 
-            when {
-                customerExists -> onSuccess()
-                else -> {
+                if (customerExists) {
+                    onSuccess()
+                } else {
                     customerCollection.document(user.uid).set(customer)
                     customerCollection.document(user.uid)
                         .collection("privateData")
@@ -46,22 +43,12 @@ class CustomerRepositoryImpl : CustomerRepository {
                         .set(mapOf("isAdmin" to false))
                     onSuccess()
                 }
+            } else {
+                onError("User is not available.")
             }
-
-        } else {
-            onError("User is not available.")
+        } catch (e: Exception) {
+            onError("Error while creating a Customer: ${e.message}")
         }
-    } catch (e: Exception) {
-        onError("Error while creating a Customer: ${e.message ?: "Unknown error"}")
-    }
-
-    override fun getCurrentUserId() = Firebase.auth.currentUser?.uid
-
-    override suspend fun signOut() = try {
-        Firebase.auth.signOut()
-        RequestState.Success(Unit)
-    } catch (e: Exception) {
-        RequestState.Error("Error signing out: ${e.message ?: "Unknown error"}")
     }
 
     override fun readCustomerFlow(): Flow<RequestState<Customer>> = channelFlow {
@@ -69,7 +56,7 @@ class CustomerRepositoryImpl : CustomerRepository {
             val userId = getCurrentUserId()
             if (userId != null) {
                 val database = Firebase.firestore
-                database.collection("customer")
+                database.collection(collectionPath = "customer")
                     .document(userId)
                     .snapshots
                     .collectLatest { document ->
@@ -80,28 +67,29 @@ class CustomerRepositoryImpl : CustomerRepository {
                                     .collection(collectionPath = "privateData")
                                     .document("role")
                                     .get()
+
                             val customer = Customer(
                                 id = document.id,
-                                firstName = document.get("firstName"),
-                                lastName = document.get("lastName"),
-                                email = document.get("email"),
-                                city = document.get("city"),
-                                postalCode = document.get("postalCode"),
-                                address = document.get("address"),
-                                phoneNumber = document.get("phoneNumber"),
-                                cart = document.get("cart"),
-                                isAdmin = privateDataDocument.get("isAdmin")
+                                firstName = document.get(field = "firstName"),
+                                lastName = document.get(field = "lastName"),
+                                email = document.get(field = "email"),
+                                city = document.get(field = "city"),
+                                postalCode = document.get(field = "postalCode"),
+                                address = document.get(field = "address"),
+                                phoneNumber = document.get(field = "phoneNumber"),
+                                cart = document.get(field = "cart"),
+                                isAdmin = privateDataDocument.get(field = "isAdmin")
                             )
-                            send(RequestState.Success(customer))
+                            send(RequestState.Success(data = customer))
                         } else {
-                            send(RequestState.Error("Queried customer document does not exist"))
+                            send(RequestState.Error("Queried customer document does not exist."))
                         }
                     }
             } else {
-                send(RequestState.Error("User is not found"))
+                send(RequestState.Error("User is not available."))
             }
         } catch (e: Exception) {
-            send(RequestState.Error("Error while reading a customer info : ${e.message}"))
+            send(RequestState.Error("Error while reading a Customer information: ${e.message}"))
         }
     }
 
@@ -145,26 +133,25 @@ class CustomerRepositoryImpl : CustomerRepository {
     override suspend fun addItemToCart(
         cartItem: CartItem,
         onSuccess: () -> Unit,
-        onError: (String) -> Unit
+        onError: (String) -> Unit,
     ) {
         try {
-            val userId = getCurrentUserId()
-            if (userId != null) {
-                val firestore = Firebase.firestore
-                val customerCollection = firestore.collection(collectionPath = "customer")
+            val currentUserId = getCurrentUserId()
+            if (currentUserId != null) {
+                val database = Firebase.firestore
+                val customerCollection = database.collection(collectionPath = "customer")
 
                 val existingCustomer = customerCollection
-                    .document(userId)
+                    .document(currentUserId)
                     .get()
-
                 if (existingCustomer.exists) {
                     val existingCart = existingCustomer.get<List<CartItem>>("cart")
                     val updatedCart = existingCart + cartItem
-
-                    customerCollection.document(userId).set(
-                        mapOf("cart" to updatedCart),
-                        merge = true
-                    )
+                    customerCollection.document(currentUserId)
+                        .set(
+                            data = mapOf("cart" to updatedCart),
+                            merge = true
+                        )
                     onSuccess()
                 } else {
                     onError("Select customer does not exist.")
@@ -181,7 +168,7 @@ class CustomerRepositoryImpl : CustomerRepository {
         id: String,
         quantity: Int,
         onSuccess: () -> Unit,
-        onError: (String) -> Unit
+        onError: (String) -> Unit,
     ) {
         try {
             val currentUserId = getCurrentUserId()
@@ -269,6 +256,15 @@ class CustomerRepositoryImpl : CustomerRepository {
             }
         } catch (e: Exception) {
             onError("Error while deleting all products from cart: ${e.message}")
+        }
+    }
+
+    override suspend fun signOut(): RequestState<Unit> {
+        return try {
+            Firebase.auth.signOut()
+            RequestState.Success(data = Unit)
+        } catch (e: Exception) {
+            RequestState.Error("Error while signing out: ${e.message}")
         }
     }
 }
