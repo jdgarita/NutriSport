@@ -50,11 +50,11 @@ class MainActivity : ComponentActivity() {
             token = token
         )
 
-        intentHandler.navigateToPaymentCompleted(
-            isSuccess = isSuccess?.toBooleanStrictOrNull(),
-            error = if (isCancelled == "null") null
-            else "Payment has been canceled.",
-            token = token
-        )
+//        intentHandler.navigateToPaymentCompleted(
+//            isSuccess = isSuccess?.toBooleanStrictOrNull(),
+//            error = if (isCancelled == "null") null
+//            else "Payment has been canceled.",
+//            token = token
+//        )
     }
 }
