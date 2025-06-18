@@ -28,7 +28,7 @@ class PaymentViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val customerRepository: CustomerRepository,
     private val orderRepository: OrderRepository,
-    private val productRepository: ProductRepository
+    private val productRepository: ProductRepository,
 ) : ViewModel() {
     var screenState: RequestState<Unit> by mutableStateOf(RequestState.Loading)
 
@@ -64,7 +64,6 @@ class PaymentViewModel(
                         }
                 }
             }
-
             customerState.isError() -> flowOf(RequestState.Error(customerState.getErrorMessage()))
             else -> flowOf(RequestState.Loading)
         }
