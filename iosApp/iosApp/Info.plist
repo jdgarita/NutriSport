@@ -16,6 +16,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.googleusercontent.apps.646976955787-o2viei9n3p7emcanmk74jn26ibm281bc</string>
+				<string>dev.jdgarita.nutrisport</string>
 			</array>
 		</dict>
 	</array>
